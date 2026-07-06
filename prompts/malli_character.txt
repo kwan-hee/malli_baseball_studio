@@ -1,0 +1,29 @@
+# 말리 캐릭터 기준 프롬프트 (모든 말리 이미지는 여기서 파생)
+# 출처: 기존 파이프라인(C:\youtube_longform_agent) 검증 프롬프트. 이름만 Mali→Malli 갱신.
+
+## 캐릭터 프롬프트 (영문 — 모든 image_prompt 맨 앞에 배치)
+
+a fluffy cream-colored Maltipoo puppy named Malli with a large red bow ribbon on her head,
+pink collar with a gold bone-shaped tag engraved "MALLI", soft curly fur, big dark expressive eyes
+
+## 스타일 서픽스 (영문 — 모든 image_prompt 맨 뒤에 배치)
+
+Studio Ghibli anime style, soft painterly backgrounds, warm pastel colors,
+gentle expressive character, clean composition, do not change character design
+
+## 조립 규칙 (기존 파이프라인 검증 방식)
+
+image_prompt = [캐릭터 프롬프트] + ", [장면 설명 — 환경, 조명, 감정]" + ", [스타일 서픽스]"
+
+- 이미지 생성 시 images/style_ref/malli_reference.png 를 multimodal 참조로 함께 전달 (일관성 핵심)
+- 표정 변형 허용: smiling / surprised / curious / sleepy
+- 금지: 털 색 변경, 리본 색 변경, 태그 텍스트 변경, 그림체 변경
+
+## 예시 (실제 사용됐던 장면 프롬프트 패턴)
+
+a fluffy cream-colored Maltipoo puppy named Malli with a large red bow ribbon on her head,
+pink collar with a gold bone-shaped tag engraved "MALLI", soft curly fur, big dark expressive eyes,
+surrounded by dozens of glowing fireflies in a dark forest, golden sparkles floating around her,
+wonder and amazement in her eyes, magical enchanted night atmosphere,
+Studio Ghibli anime style, soft painterly backgrounds, warm pastel colors,
+gentle expressive character, clean composition, do not change character design

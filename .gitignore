@@ -1,0 +1,19 @@
+# 대용량 미디어 산출물은 리포에서 제외 (GitHub 100MB 한도 + 용량)
+output/**/*.mp4
+output/**/*.wav
+output/**/*.mp3
+output/**/*.png
+output/**/*.srt
+output/**/scenes/
+output/**/scenes_v2/
+output/**/concat.txt
+images/**/*.png
+images/**/*.jpg
+
+# 캐릭터 시트는 예외 (작음, 필수 레퍼런스)
+!images/style_ref/malli_reference.png
+
+# 임시/상태
+.omc/
+__pycache__/
+*.log
