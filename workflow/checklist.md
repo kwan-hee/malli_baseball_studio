@@ -13,6 +13,7 @@
 - [x] docs/07_AUDIO.md
 - [x] docs/08_FFMPEG.md
 - [x] docs/09_STORYBOOK.md
+- [x] docs/10_TALE_LIBRARY.md — 퍼블릭 도메인 동화 150편 카탈로그 (2026-07-07)
 
 ## TODO 확정 필요 (사용자 결정)
 

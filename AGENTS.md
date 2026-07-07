@@ -12,6 +12,7 @@
 | 말리 캐릭터 등장 콘텐츠 (대본, 이미지) | docs/03_MALLI.md |
 | 야구사전 콘텐츠 | docs/04_BASEBALL.md + docs/03_MALLI.md |
 | 말리 동화 콘텐츠 | docs/09_STORYBOOK.md + docs/03_MALLI.md |
+| 동화 에피소드 소재 선정 | docs/10_TALE_LIBRARY.md (퍼블릭 도메인 150편 카탈로그) |
 | 썸네일 제작 | docs/05_THUMBNAIL.md |
 | 이미지 생성 | docs/06_IMAGE.md |
 | 나레이션·BGM·효과음 | docs/07_AUDIO.md |
