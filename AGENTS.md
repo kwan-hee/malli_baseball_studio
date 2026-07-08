@@ -44,4 +44,5 @@
 
 - 중간산출물(초안, 리서치 노트, 렌더 전 소스)은 `output/` 에 저장.
 - **최종 완성본은 Obsidian vault `50_Outputs/` 에 저장** (야구사전 → `50_Outputs/야구사전`, 동화 → `50_Outputs/말리동화`).
+  - Vault 절대경로: `C:\Users\user\Documents\Joy_SecondBrain\50_Outputs` (야구사전/ · 말리동화/ 하위폴더). 신규 주제 추천 전 여기부터 확인해 기존 편과 중복 회피.
 - 세션 시작 시 `workflow/checklist.md` 확인, 작업 중 결정사항은 `workflow/context-notes.md` 에 즉시 기록.
