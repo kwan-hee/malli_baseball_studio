@@ -128,6 +128,18 @@
 - 첫 썸네일 파이프라인 확립: Gemini 배경(좌측 1/3 어둡게 비우는 프롬프트) → ffmpeg drawtext(malgunbd.ttf, 2줄) → output/{편명}/thumbnail.png.
 - TTS 실측 3:00 (대본 예상 4:10보다 짧음) — Puck 발화 속도 분당 약 420자. 다음 편 분량 산정 시 참고.
 
+## 2026-07-08 — 야구사전 8편 "끝내기(Walk-off)" 제작 완료
+
+- 소재 추천: 사용자가 Obsidian 50_Outputs/야구사전 기존 편 확인 요청 → **vault 절대경로가 문서에 없어 매번 디스크 검색 필요**했음. `C:\Users\user\Documents\Joy_SecondBrain\50_Outputs` 를 AGENTS.md + 메모리(obsidian-vault-path)에 고정. 기존 7편(보크·인필드플라이·징크스·지명타자·유명구장·낫아웃·자책점) 확인 후 겹침 없는 "끝내기" 선정.
+- 게이트 자동승인 모드로 리서치→대본→배정→생성 무중단 진행.
+- 최종본: output/baseball/끝내기/끝내기_final.mp4 (2:33, 357MB) + thumbnail.png. Obsidian 50_Outputs/야구사전 에 mp4+썸네일+md 저장 완료. 프레임 2장 검증 통과(자막 바닥밀착 정상).
+- 구성: 삽화 10장 + Seedance 2.0 클립 2편(s01 끝내기 홈런 훅, s06 백투백 재현) + Puck 나레이션 + 바닥 자막 + The Diamond BGM.
+- **단일 호출 TTS + Whisper 첫 야구 적용** (기존 야구는 씬별 호출이었음). Puck 전체 151.5s, 10씬 경계 깔끔. 실측 2:33 (Puck 발화 분당 약 490자).
+- **tts-scene-gap 규칙 첫 적용**: compose.py PAD 0.15 / AUDIO_DELAY 0. 씬 경계 무음 최소화 의도대로 반영.
+- Seedance 재확인: resolution 파라미터 생략 시 720p 기본 (context-notes 126 기록대로 재발). 이번엔 카툰이라 upscale 허용하고 재생성 안 함. generate_audio 도 기본 true로 나갔으나 compose가 나레이션으로 대체하므로 무해.
+- 콘텐츠 포인트: 워크오프 어원(에커슬리 1988, 원래 진 투수 비하) + 만루 끝내기 안타 기록규칙(단타 처리, 홈런만 예외)이 고인물 훅. 다음 편 예고 = 블론세이브.
+- 유료 사용: Gemini 이미지 11회(본편 10+썸네일 배경 1), Gemini TTS 1회, Seedance 2편. 잔액 1933.6→(영상 2편 차감).
+
 ## 2026-07-07 — 동화 라이브러리 구축 (docs/10_TALE_LIBRARY.md)
 
 - 사용자 요청 "세계 동화를 말리에게 학습" → 실체화 형태 확인: **퍼블릭 도메인 동화 카탈로그 문서** (파인튜닝 아님), 규모는 1000편 전체가 아닌 **선별 약 150편** (둘 다 사용자 선택).
@@ -153,3 +165,16 @@
 - 원인: compose.py 가 씬별로 오디오에 `adelay=AUDIO_DELAY_MS(400)` + `apad`(sdur=adur+PAD(0.8))를 걸어 앞 0.4s·뒤 0.4s 무음을 붙임 → concat 후 씬 경계마다 0.8s 죽은 소리. 원래 단일 호출로 연속이던 나레이션을 잘라 다시 패딩해 붙이는 구조라 발생.
 - **다음 편부터: compose.py 의 `PAD 0.8→0.15`, `AUDIO_DELAY_MS 400→0`** 로 시작할 것 (경계 무음 0.8→0.15s). 사용자 지시 — 순무 편 산출물은 그대로 두고 이후 에피소드에만 적용.
 - 그래도 끊기면 근본 해결: 최종 단계에서 narration_full.wav 통짜를 입히고 영상 길이만 씬별 정렬(현재 씬별 무음 패딩 폐기).
+
+## 2026-07-08 — 동화 3편 "말리와 사자와 생쥐" 제작 완료 (사자와 생쥐, 이솝)
+
+- 소재: 10_TALE_LIBRARY "상" 사자와 생쥐. 사용자 4후보 중 선택. 게이트 자동 승인 모드로 보고 후 즉시 진행.
+- 최종본: output/storybook/말리와_사자와_생쥐/말리와_사자와_생쥐_final.mp4 (3:12, 1080p, 447MB) + thumbnail.png. Obsidian 50_Outputs/말리동화/ 저장 완료 (mp4+썸네일+md).
+- 각색: 말리 = 진행자/관찰자 (s01·s05·s10만 등장, 이야기 내부 씬은 사자·생쥐만 — 프롬프트 "NO dog, Malli does NOT appear"). 사냥꾼 순화 → "장난꾸러기들이 쳐 놓은 그물", 폭력·죽음 없음.
+- **씬 경계 무음 규칙 첫 적용**: compose.py PAD 0.15 / AUDIO_DELAY_MS 0. 최종본에서 씬 넘어갈 때 끊김 없음 확인 (순무 편 대비 개선).
+- **영상 = Higgsfield Seedance 2.0 폴백 (Flow 대체)**: 이 세션은 Flow 웹 자동화(브라우저 확장) 불가 + 로컬 업로드 수동 제약 → 정책상 동화 폴백인 Higgsfield로 전환. s06/s09 이미지를 media_upload(presigned PUT)→media_confirm→generate_video(start_image, 8s, 1080p std, generate_audio false). 1080p std 소요 약 5분. 크레딧 잔액 2077(ultra)로 충분.
+  - Seedance job_status: sync:true 여도 실제 대기 안 하고 즉시 in_progress 반환 → 백그라운드 sleep으로 폴링 간격 확보.
+  - 완성 mp4는 job_status 결과의 results.rawUrl (cloudfront) → curl 다운로드. MCP 503 없이 정상.
+- 이미지 QC: 10장 전부 1회 통과, 재생성 0 (말리 태그 MALLI 정확, 사자 다정 톤 "not scary" 명시 효과, 등장 규칙 준수). gemini-3-pro-image-preview 504 없이 완료.
+- 분량: 대본 약 1,900자 → Kore 실측 190.4s(3:10). 순무 편 학습(2,000자+ 목표) 대체로 맞음 — Kore 약 600자/분 근처.
+- 썸네일: gen_thumbnail.py 배경(좌측 1/3 비움) + ffmpeg drawtext 2줄(malgunbd, 흰+노랑, 검정 외곽 borderw7) "작은 생쥐가 / 사자를 구했어요!".
