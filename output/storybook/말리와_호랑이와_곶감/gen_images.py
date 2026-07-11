@@ -13,15 +13,9 @@ OUT = BASE / "images"
 OUT.mkdir(exist_ok=True)
 
 # API 키: 기존 파이프라인 .env 재사용
-ENV = Path(r"C:\youtube_longform_agent\.env")
-API_KEY = None
-for line in ENV.read_text(encoding="utf-8").splitlines():
-    line = line.strip()
-    if line.startswith(("GEMINI_API_KEY=", "gemini=")):
-        API_KEY = line.split("=", 1)[1].strip()
-        break
-if not API_KEY:
-    sys.exit("GEMINI_API_KEY not found in .env")
+# 다중 구글 계정 Gemini 키 자동 페일오버 풀 (429 소진 시 다음 키로 전환)
+sys.path.insert(0, r"C:\youtube_longform_agent")
+from gemini_pool import GeminiPool, is_quota_error
 
 REF = Path(r"C:\PROJECT\images\style_ref\malli_reference.png")
 
@@ -61,7 +55,8 @@ SCENES = {
     "s10": f"{MALLI}, waving goodbye warmly at sunrise over the peaceful village, with {TIGER} tiny and safe far away up on the mountain, soft warm morning colors, {STYLE}",
 }
 
-client = genai.Client(api_key=API_KEY, http_options={"timeout": 300000})
+pool = GeminiPool()
+client = pool.client()
 ref_bytes = REF.read_bytes()
 
 for sid, scene in SCENES.items():
@@ -105,8 +100,12 @@ for sid, scene in SCENES.items():
         except Exception as e:
             err = str(e)
             print(f"{sid}: attempt {attempt+1} failed — {type(e).__name__}: {err[:120]}")
-            if "429" in err or "RESOURCE_EXHAUSTED" in err:
-                sys.exit(f"{sid}: quota exceeded — stop, report to user")
+            if is_quota_error(err):
+                try:
+                    client = pool.rotate()  # 키 소진 → 다음 계정으로
+                    continue
+                except RuntimeError:
+                    sys.exit(f"{sid}: all gemini keys exhausted — stop")
             time.sleep(10 * (attempt + 1))
     else:
         sys.exit(f"{sid}: all retries failed — stop, report to user")

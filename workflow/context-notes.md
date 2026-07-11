@@ -231,3 +231,12 @@
 - **whisper 씬 분할 붕괴 → 재실행으로 해결 (신규 대응법):** 1차 분할에서 s05=0.8s(붕괴)·s10=57.4s(과대) 오정렬 발생. audio/s0*.wav 삭제 후 make_narration 재실행(narration_full.wav는 캐시라 TTS 재호출 없음, whisper만 재실행) → 비결정성으로 경계 재계산되어 s05 19.2s·s10 31.5s 정상화. **씬 길이 이상(1s 미만 또는 과대) 시 이 재실행이 first-line 대응.**
 - 분량: 대본 약 1,750자 → Kore 실측 231.3s(3:51) → 최종 232.8s(3:53). Kore 약 450자/분 (토끼편 600자/분보다 느림 — 동화 구연 "천천히" + 문장 사이 여유 지시 강화 영향 추정).
 - 프레임 검증: s08·s09 Seedance 모션·순화 톤 정상, s05 재분할 정상, 자막 MemomentKkukkukk 바닥밀착. 유료: Gemini 이미지 11회(본편10+썸네일1) + Gemini TTS 1회 + Seedance 2편.
+
+## 2026-07-10 — Gemini 다중 계정 자동 페일오버 도입 (사용자 요청)
+
+- 배경: 사용자가 구글 계정 크레딧 소진 걱정 → 계정 2개를 자동 전환(하나 소진 시 다른 계정으로 무중단)해 달라 요청.
+- **잔액 확인 결과: 지금 당장 막힌 건 없음.** Higgsfield(영상) 1117.3 크레딧 넉넉. Gemini 키1(현재 .env `gemini=AQ.Ab8RN...`) 정상 작동(오늘 3편 이미지·TTS 다 이걸로). **단, 사용자가 준 키2(`gemini2=AIzaSy...`)는 실호출 시 429 "prepayment credits are depleted" — 이미 소진된 계정이었음.** 즉 현재 살아있는 키는 1개뿐 → 실효 백업 없음. 크레딧 남은 다른 계정 키를 넣어야 페일오버가 실익.
+- **구현: `gemini_pool.py`** (실행 사본 = C:\youtube_longform_agent\gemini_pool.py, .env 옆. 리포 백업 = C:\PROJECT\gemini_pool.py — 수정 시 두 곳 동기화). .env 의 `gemini=`(1번), `gemini2=`,`gemini3=`... 순으로 N개 키 로드. 429/RESOURCE_EXHAUSTED 시 `rotate()` 로 다음 키 전환, 마지막 성공 키를 `.gemini_active.json` 에 기억(다음 실행도 그 키부터 시작 → 죽은 키 재시도 낭비 방지). 전부 소진 시에만 정지.
+- **템플릿 6종 적용**: 배럴타구(야구)·말리와_호랑이와_곶감(동화) 각각 gen_images·make_narration·gen_thumbnail. 기존 `client=genai.Client(키)` + 429 `sys.exit` → `pool=GeminiPool(); client=pool.client()` + 429 시 `client=pool.rotate()` 후 재시도로 교체. **이후 신규 편이 이 두 폴더를 템플릿으로 복사하므로 자동 상속.**
+- 검증: 6종 py_compile OK. 풀 2키 인식. **end-to-end 페일오버 실증** — 죽은 키2에서 강제 시작 → 429 → rotate → 살아있는 키1로 성공. 활성 idx는 0(작동키)으로 정상.
+- 주의: 새 키 추가 = .env 에 `gemini3=키` 한 줄. 코드 수정 불필요. 무료티어 키는 분당 한도 낮아 429 잦을 수 있으나 풀이 회전/재시도로 흡수.

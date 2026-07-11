@@ -10,15 +10,9 @@ from google.genai import types
 BASE = Path(__file__).parent
 OUT = BASE / "thumb_bg.png"
 
-ENV = Path(r"C:\youtube_longform_agent\.env")
-API_KEY = None
-for line in ENV.read_text(encoding="utf-8").splitlines():
-    line = line.strip()
-    if line.startswith(("GEMINI_API_KEY=", "gemini=")):
-        API_KEY = line.split("=", 1)[1].strip()
-        break
-if not API_KEY:
-    sys.exit("GEMINI_API_KEY not found")
+# 다중 구글 계정 Gemini 키 자동 페일오버 풀 (429 소진 시 다음 키로 전환)
+sys.path.insert(0, r"C:\youtube_longform_agent")
+from gemini_pool import GeminiPool, is_quota_error
 
 MODEL = "gemini-3-pro-image-preview"
 FALLBACK_MODEL = "gemini-2.5-flash-image"
@@ -34,7 +28,8 @@ PROMPT = (
     "Aspect ratio 16:9, resolution 1280x720."
 )
 
-client = genai.Client(api_key=API_KEY, http_options={"timeout": 300000})
+pool = GeminiPool()
+client = pool.client()
 
 for attempt in range(4):
     model = MODEL if attempt < 2 else FALLBACK_MODEL
@@ -57,7 +52,14 @@ for attempt in range(4):
             break
         raise RuntimeError("no image part")
     except Exception as e:
-        print(f"attempt {attempt+1} failed - {type(e).__name__}: {str(e)[:100]}")
+        err = str(e)
+        print(f"attempt {attempt+1} failed - {type(e).__name__}: {err[:100]}")
+        if is_quota_error(err):
+            try:
+                client = pool.rotate()  # 키 소진 → 다음 계정으로
+                continue
+            except RuntimeError:
+                sys.exit("thumbnail: all gemini keys exhausted")
         time.sleep(10 * (attempt + 1))
 else:
     sys.exit("thumbnail bg: all retries failed")

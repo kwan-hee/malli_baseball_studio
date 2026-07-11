@@ -22,15 +22,9 @@ BASE = Path(__file__).parent
 OUT = BASE / "audio"
 OUT.mkdir(exist_ok=True)
 
-ENV = Path(r"C:\youtube_longform_agent\.env")
-API_KEY = None
-for line in ENV.read_text(encoding="utf-8").splitlines():
-    line = line.strip()
-    if line.startswith(("GEMINI_API_KEY=", "gemini=")):
-        API_KEY = line.split("=", 1)[1].strip()
-        break
-if not API_KEY:
-    sys.exit("GEMINI_API_KEY not found")
+# 다중 구글 계정 Gemini 키 자동 페일오버 풀 (429 소진 시 다음 키로 전환)
+sys.path.insert(0, r"C:\youtube_longform_agent")
+from gemini_pool import GeminiPool, is_quota_error
 
 MODEL = "gemini-2.5-flash-preview-tts"
 VOICE = "Kore"
@@ -81,7 +75,8 @@ def generate_full():
     if FULL_WAV.exists() and FULL_WAV.stat().st_size > 100000:
         print("full narration: cached")
         return
-    client = genai.Client(api_key=API_KEY, http_options={"timeout": 300000})
+    pool = GeminiPool()
+    client = pool.client()
     full_text = "\n\n".join(SCENES.values())
     for attempt in range(3):
         try:
@@ -106,8 +101,12 @@ def generate_full():
         except Exception as e:
             err = str(e)
             print(f"full TTS attempt {attempt+1} failed - {type(e).__name__}: {err[:100]}")
-            if "429" in err or "RESOURCE_EXHAUSTED" in err:
-                sys.exit("quota exceeded - stop, report to user")
+            if is_quota_error(err):
+                try:
+                    client = pool.rotate()  # 키 소진 → 다음 계정으로
+                    continue
+                except RuntimeError:
+                    sys.exit("all gemini keys exhausted - stop")
             time.sleep(10 * (attempt + 1))
     sys.exit("full TTS: all retries failed")
 
