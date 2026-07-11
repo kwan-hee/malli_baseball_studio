@@ -17,6 +17,7 @@
 | 이미지 생성 | docs/06_IMAGE.md |
 | 나레이션·BGM·효과음 | docs/07_AUDIO.md |
 | ffmpeg 명령 실행 | docs/08_FFMPEG.md |
+| 영상 제목 최적화 (SEO·CTR·조회수 등급·베스트 제목) | docs/11_TITLE_ENGINE.md (또는 /제목 스킬). 야구·동화 각 편 SEO 단계에서 자동 실행 |
 
 ## 폴더 경계
 
