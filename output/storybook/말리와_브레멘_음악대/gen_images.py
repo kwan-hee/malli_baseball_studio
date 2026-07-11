@@ -32,8 +32,11 @@ FOUR = "the four animal friends (the grey donkey, the brown dog, the grey cat an
 MEN = "a few comical grumpy men in plain old clothes, silly and NOT scary"
 NO_MALLI = "NO dog puppy Malli in this scene, Malli does NOT appear"
 STYLE = (
-    "Studio Ghibli anime style, soft painterly backgrounds, warm pastel colors, watercolor texture "
-    "with painterly brush strokes, gentle expressive characters, clean composition, "
+    "hand-drawn 2D animation in the style of a Studio Ghibli / Hayao Miyazaki film, "
+    "lush hand-painted gouache backgrounds, soft natural lighting and gentle warm atmosphere, "
+    "clean confident linework with cel-shaded characters, soft rounded faces and large gentle expressive eyes, "
+    "warm nostalgic pastel color palette, cozy whimsical storybook mood, cinematic anime film look, "
+    "NOT watercolor, NOT 3D render, NOT generic cartoon, "
     "absolutely NO text, no letters, no words anywhere, do not change character design"
 )
 

@@ -18,7 +18,8 @@
 ## 스타일
 
 - 야구사전: (TODO: 확정 스타일 기입, 예 — 밝은 카툰, 야구장 배경)
-- 말리 동화: 지브리풍 일본 애니메이션 + 수채화 질감 (확정 — prompts/malli_character.txt 기준)
+- 말리 동화: **확실한 스튜디오 지브리(미야자키 필름) 셀 애니 스타일** — hand-drawn 2D, gouache 배경, 부드러운 자연광, 셀 셰이딩, 큰 눈. 단일 출처 = prompts/malli_character.txt 스타일 서픽스.
+  - **⚠ 드리프트 주의 (2026-07-10 사용자 피드백)**: "watercolor texture / painterly brush strokes" 같은 표현을 넣으면 지브리에서 **수채화 그림책** 톤으로 이탈함. 스타일 서픽스에서 watercolor 제거하고 "NOT watercolor, NOT 3D, NOT generic cartoon" 을 명시할 것. 이 강화 서픽스로 지브리 재현 확인 완료.
 - 한 편 안에서 그림체 혼용 금지
 
 ## 저장·명명

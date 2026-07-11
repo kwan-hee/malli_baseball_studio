@@ -8,8 +8,11 @@ pink collar with a gold bone-shaped tag engraved "MALLI", soft curly fur, big da
 
 ## 스타일 서픽스 (영문 — 모든 image_prompt 맨 뒤에 배치)
 
-Studio Ghibli anime style, soft painterly backgrounds, warm pastel colors,
-gentle expressive character, clean composition, do not change character design
+hand-drawn 2D animation in the style of a Studio Ghibli / Hayao Miyazaki film,
+lush hand-painted gouache backgrounds, soft natural lighting and gentle warm atmosphere,
+clean confident linework with cel-shaded characters, soft rounded faces and large gentle expressive eyes,
+warm nostalgic pastel color palette, cozy whimsical storybook mood, cinematic anime film look,
+NOT watercolor, NOT 3D render, NOT generic cartoon, do not change character design
 
 ## 조립 규칙 (기존 파이프라인 검증 방식)
 
@@ -25,5 +28,8 @@ a fluffy cream-colored Maltipoo puppy named Malli with a large red bow ribbon on
 pink collar with a gold bone-shaped tag engraved "MALLI", soft curly fur, big dark expressive eyes,
 surrounded by dozens of glowing fireflies in a dark forest, golden sparkles floating around her,
 wonder and amazement in her eyes, magical enchanted night atmosphere,
-Studio Ghibli anime style, soft painterly backgrounds, warm pastel colors,
-gentle expressive character, clean composition, do not change character design
+hand-drawn 2D animation in the style of a Studio Ghibli / Hayao Miyazaki film,
+lush hand-painted gouache backgrounds, soft natural lighting and gentle warm atmosphere,
+clean confident linework with cel-shaded characters, soft rounded faces and large gentle expressive eyes,
+warm nostalgic pastel color palette, cozy whimsical storybook mood, cinematic anime film look,
+NOT watercolor, NOT 3D render, NOT generic cartoon, do not change character design

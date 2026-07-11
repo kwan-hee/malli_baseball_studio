@@ -31,7 +31,9 @@ PROMPT = (
     "cottage at night, warm and heartwarming funny scene, positioned on the RIGHT TWO THIRDS of the frame, "
     "bright cheerful colors with strong contrast, "
     "composition leaves the LEFT THIRD of the image relatively simple and soft (plain night sky) for large text overlay, "
-    "Studio Ghibli anime style, soft painterly, warm colors, no text, no letters. "
+    "hand-drawn 2D animation in the style of a Studio Ghibli / Hayao Miyazaki film, "
+    "lush hand-painted gouache backgrounds, soft natural lighting, cel-shaded characters with large gentle eyes, "
+    "warm nostalgic pastel palette, cinematic anime film look, NOT watercolor, NOT 3D, no text, no letters. "
     "Aspect ratio 16:9, resolution 1280x720."
 )
 

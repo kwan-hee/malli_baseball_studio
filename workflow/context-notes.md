@@ -263,3 +263,11 @@
   - 영상 = Seedance 2.0 s08(동물 탑 대합창)·s09(심술쟁이 도망). Higgsfield 973→829.
   - **whisper 씬분할 붕괴 재발**(s09=5.8s·s10=63.2s) → 씬wav 삭제·재실행 1회로 정상화(s09 17.7s). 단 s10 51s로 여전히 김 — silencedetect로 확인 결과 **뒤 무음 아님(Kore 느린 구연 연속 발화)**, 마지막 씬이라 수용. Kore 실측 247s/1900자 = 분당 약 461자.
   - **제목 엔진 첫 자동 적용 편**: Obsidian md에 🎯 제목 최적화 섹션 포함. 베스트="브레멘 음악대, 넷이 힘을 합치면! | 말리"(S).
+
+## 2026-07-10 — 동화 지브리 스타일 고정 (사용자 피드백)
+
+- 증상: 동화 이미지가 회를 거듭할수록 지브리에서 이탈, 수채화 그림책 톤으로 변함.
+- 원인: 스타일 서픽스의 "watercolor texture / painterly brush strokes" 가 gemini-3-pro-image 를 수채화 쪽으로 끌어당김.
+- 조치: watercolor 제거 + 지브리 셀 애니 특징 강화 + 네거티브 명시("NOT watercolor, NOT 3D, NOT generic cartoon"). 새 서픽스로 테스트 이미지 1장 렌더 → 지브리 gouache 배경·셀 셰이딩 확인 후 고정.
+- 반영: prompts/malli_character.txt(단일 출처), docs/06_IMAGE.md(드리프트 주의), 동화 템플릿(브레멘) gen_images/gen_thumbnail STYLE. 메모리 [[storybook-ghibli-style]]. 야구사전은 카툰 톤 유지(동화 전용 규칙).
+- 다음 동화 편은 브레멘 폴더 복사로 새 스타일 자동 상속.
