@@ -1,0 +1,48 @@
+{
+  "preset": "malli_video",
+  "version": 1,
+  "approved": true,
+  "approved_date": "2026-07-12",
+  "channel": "storybook",
+  "provider_chain": [
+    "veo-3.1-fast",
+    "higgsfield-seedance-rest",
+    "veo-3.1-lite",
+    "image_motion"
+  ],
+  "higgsfield_rest": {
+    "model_path": "bytedance/seedance/v1/pro/image-to-video",
+    "input": "image_url",
+    "duration": 5,
+    "resolution": "1080p"
+  },
+  "higgsfield_mcp": {
+    "model": "seedance_2_0",
+    "duration": 8,
+    "aspect_ratio": "16:9",
+    "resolution": "1080p",
+    "mode": "std",
+    "generate_audio": false,
+    "medias_role": "start_image",
+    "preflight": "get_cost"
+  },
+  "prompt_quality_block": "keep Malli's identity EXACTLY as in the start image: same cream fur, same red bow ribbon, same pink collar with gold bone-shaped tag, same face shape and same dark expressive eyes in every frame; identical hairstyle, clothing and character colors throughout the clip; correct paws, hands and body proportions; gentle child-friendly movement, natural walking and running; expressive but stable emotions, readable facial expressions; smooth slow cinematic camera movement; soft warm lighting, clear subject separation, warm children's storybook feeling, smooth scene continuity, minimal flicker",
+  "avoid_in_prompt": "no identity drift, no distorted face or clothing, no extra fingers or extra limbs, no flicker, no sudden camera shake, no aggressive zoom, no rapid or violent motion, no background character duplication, no text or letters anywhere, nothing scary, age-appropriate for ages 5-7",
+  "unsupported_as_provider_params": [
+    "negative_prompt",
+    "motion_strength",
+    "camera_movement",
+    "quality_level",
+    "character_consistency",
+    "seed"
+  ],
+  "quality_policy": {
+    "maximum_paid_video_scenes": 4,
+    "recommended_paid_video_scenes": 3,
+    "retry_limit_per_scene": 1,
+    "fallback_after_retry": "image_motion",
+    "reserve_credit_percent": 20,
+    "require_image_approval": true,
+    "reuse_completed_assets": true
+  }
+}
