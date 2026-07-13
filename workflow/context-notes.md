@@ -271,3 +271,55 @@
 - 조치: watercolor 제거 + 지브리 셀 애니 특징 강화 + 네거티브 명시("NOT watercolor, NOT 3D, NOT generic cartoon"). 새 서픽스로 테스트 이미지 1장 렌더 → 지브리 gouache 배경·셀 셰이딩 확인 후 고정.
 - 반영: prompts/malli_character.txt(단일 출처), docs/06_IMAGE.md(드리프트 주의), 동화 템플릿(브레멘) gen_images/gen_thumbnail STYLE. 메모리 [[storybook-ghibli-style]]. 야구사전은 카툰 톤 유지(동화 전용 규칙).
 - 다음 동화 편은 브레멘 폴더 복사로 새 스타일 자동 상속.
+
+## 2026-07-12 — 동화 7편 "말리와 아기 돼지 삼형제" 제작 완료 (영국 민담)
+
+- 사용자 후보 5개 중 "아기 돼지 삼형제" 선택 → 제작. 브레멘 폴더 복사 템플릿(지브리 스타일·페일오버 상속).
+- 최종본: output/storybook/말리와_아기_돼지_삼형제/말리와_아기_돼지_삼형제_final.mp4 (3:44, 1080p, 471MB) + thumbnail.png. Obsidian 50_Outputs/말리동화/ md+mp4+썸네일 저장(2026-07-12_*). TALE_LIBRARY ✅ 표기.
+- 각색: 말리=진행자(s01·s05·s10). 순화: 잡아먹기·굴뚝 결말 삭제, 늑대는 우스꽝 톤(불다 지쳐 데굴데굴 도망). 후렴 "아기 돼지야, 문 열어라!"/"안 돼요, 안 돼요, 절대 안 돼요!". 교훈=성실하게 준비하기.
+- 이미지 QC: 본편 10장 중 s10만 재생성 1회(말리 리본이 목에 감 — "bow ON TOP OF HER HEAD, NOT a bowtie" 명시로 해결). 돼지 구분(밀짚모자/파란모자/빨간멜빵) 전 씬 일관.
+- **영상 = Veo 3.1 Fast, Gemini API 직접 호출 첫 실전 적용** (이 세션 Higgsfield MCP 사용 불가 → 비용정책 주력 경로). gen_clips_veo.py: client.models.generate_videos(model="veo-3.1-fast-generate-preview", image=start image) → operation 폴링 → files.download. s08(나무집 붕괴) 렌더 63s, s09(늑대 도망) 47s. 폴백 체인: fast→lite→(실패 시 compose.py 가 Ken Burns 자동 폴백 — VIDEO_SCENES 를 존재하는 클립만으로 필터).
+- Whisper 씬 분할 1회 통과(붕괴 없음, 17.5~33.6s). 대본 약 1,890자 → Kore 실측 222.4s(3:42) → 최종 223.9s(3:44). 분당 약 510자.
+- 유료 사용: Gemini 이미지 12회(본편10+재생성1+썸네일1), Gemini TTS 1회, Veo 3.1 Fast 2회. Higgsfield 크레딧 소모 0.
+
+
+## 2026-07-12 — 지브리 스타일 필수화 + 영상 폴백 체인 배선 (사용자 지시)
+
+- **지브리 필수화 3중 장치**: ①STYLE 문구 단일 출처 prompts/ghibli_style.txt ②스타일 앵커 ghibli_scene_ref.png(아기돼지 s09 승인 컷)를 캐릭터 시트와 함께 매 요청 첨부 ③생성 후 전수 프레임 검수 게이트(이탈 시 재생성, 통과 전 진행 금지). 아기돼지 폴더(차기 템플릿) gen_images/gen_thumbnail 반영 — 이후 편 복사로 자동 상속.
+- **클립 폴백 체인 배선**: gen_clips_veo.py = Veo 3.1 Fast → Seedance 1.5(Higgsfield 직접 REST, platform.higgsfield.ai bytedance/seedance/v1/pro/image-to-video) → Veo lite → compose.py Ken Burns. HF 인증 = 키 파일(C:/말리/HF_API_Key*.txt, key=value 2줄) 파싱 → "Key uuid:secret" 헤더, 기본 urllib UA는 Cloudflare 1010 차단이라 UA 명시 필수. 더미 status 조회 404로 키 유효 무비용 확인. 스텁 테스트로 체인 순서 검증 완료.
+- cp949 콘솔 주의 재확인: print 문자열에 em-dash(—) 금지 (UnicodeEncodeError).
+
+
+## 2026-07-12 — 동화 8편 "말리와 미운 오리 새끼" 제작 완료 (안데르센, 새 지브리 앵커 첫 편)
+
+- 최종본: output/storybook/말리와_미운_오리_새끼/말리와_미운_오리_새끼_final.mp4 (4:34, 1080p, 434MB) + thumbnail.png. Obsidian 50_Outputs/말리동화/ md+mp4+썸네일 저장(2026-07-12_*). TALE_LIBRARY ✅.
+- **사용자 제공 지브리 앵커 이미지 첫 실전 — 이미지 10장 1회 통과·재생성 0 (역대 최초).** 전 씬 지브리 배경화 톤 일관, 앵커 캐릭터(토토로 등) 유출 없음. 3중 장치(STYLE 단일출처+앵커 첨부+검수 게이트) 효과 확인.
+- 각색: 말리 진행자(s01·s05·s10), 순화(왕따→수군거림, 사냥 삭제), 교훈=나다움·자존감. 대본 1,700자 → Kore 실측 272.1s(분당 375자 — 역대 최저 속도, 감성 톤 지시 영향 추정).
+- 영상 = Veo 3.1 Fast 2클립(s08 물반영 47s, s09 비상 62s 렌더). 폴백 체인 배선 첫 편이나 Fast 1차 성공으로 폴백 미발동.
+- **whisper 씬 분할 2회 연속 붕괴 → 신규 대응법 확립: 문자 비율 모델 + silencedetect 무음 스냅.** 재실행(기존 first-line)도 실패 시: ①s01~s03 등 안정 경계는 유지 ②나머지는 문자수 비율로 추정 경계 산출 ③±4s 내 무음 시작점에 스냅(+0.15s) ④무음 없으면 인접 무음의 길이 비교 — 씬 경계는 ~0.6s+ 긴 무음, 문장 쉼은 ~0.35s. s08 경계를 이 방식으로 183.95 확정, 프레임 검증서 자막 싱크 정확 확인.
+- 유료 사용: Gemini 이미지 11회(본편10+썸네일1, 재생성 0), TTS 1회, Veo Fast 2회. Higgsfield 크레딧 0.
+
+## 2026-07-12 — 야구사전 13편 "구종 완전 정복" 콘텐츠 패키지 완료
+
+- /야구사전 스킬로 생성. 5개 구종(포심·투심·슬라이더·커브·체인지업) 통합편 — 기초 시리즈 2번째. 산출: 50_Outputs/야구사전/2026-07-12_구종_완전_정복.md (12.5KB, 리서치+대본 1,450자+SEO+제목엔진).
+- 제목 엔진 베스트: "야구 구종 정리, 5개만 알면 중계가 들린다" (24자, S등급). 썸네일 메인 "구종, 딱 5개면 끝".
+- 리서치 판단: 체인지업 기원(퍼드 갤빈설)은 교차 검증 부족 → 대본에서 제외, 리서치 노트에 "확인 필요"로만 표기. 커브(캔디 커밍스 1863)·슬라이더(블레이홀더 1920s)는 영문 소스 교차 확인됨.
+- **인프라 발견**: Write 안전 분류기 장애(~15분) 시 don't-ask 모드에서는 쓰기 도구 전체(Write·PowerShell) 차단, 읽기만 가능. 백오프 재시도(60s→180s→300s) 무의미 — 장애 지속 시 사용자 권한 모드 전환 안내가 정답 (실제 해소 경로). 분류기 회복 후에도 PowerShell은 간헐 차단 → Write/Edit 도구가 우선 경로.
+- 다음 편 후보: 포크볼·스플리터 (13편 대본 마무리에서 예고 — 차기 우선). 13편 영상 제작은 미착수 (씬 분할·배정표부터).
+
+## 2026-07-13 — 구종_완전_정복 최종 mp4 완성 + Higgsfield 모델명 변경 발견
+
+- **Higgsfield API에서 `seedance-2.0-mini` 404 Model not found.** HiggsFieldClient(youtube_longform_agent) 경유 gen_videos.py가 조용히 FFmpeg pan/zoom 폴백으로 떨어짐 — "완료" 로그가 나와도 진짜 Seedance 아닐 수 있으니 주의.
+- **해결: Higgsfield MCP 직접 사용, 모델 ID `seedance_2_0`** (duration 4~15s, 1080p는 mode='std' 필요, generate_audio:false 로 무음 생성). media_upload presigned URL → curl PUT → media_confirm → generate_video → job_status(sync) → CloudFront URL curl 다운로드 흐름으로 s01·s08 클립 생성 성공.
+- gen_videos.py 의 모델명은 아직 옛 이름 그대로 — 다음 편 복사 시 MCP 방식으로 교체 필요.
+- 최종본: 구종_완전_정복_final.mp4 (203.4s, 312MB, 씬 10개, seedance 2 + kenburns 8). 프레임 4장 추출 검증 통과 (자막 바닥 밀착, CTA 포함).
+
+## 2026-07-13 — 야구사전 14편 "파울팁과 파울의 차이" 제작 완료 (기초 시리즈 3번째)
+
+- 흐름: `/야구사전 파울팁과 파울의 차이` 스킬로 텍스트(md) → 사용자 "진행해" → 구종_완전_정복 폴더 템플릿 복사(페일오버 상속)로 영상 제작. 게이트 자동 승인 모드.
+- 최종본: output/baseball/파울팁과_파울의_차이/파울팁과_파울의_차이_final.mp4 (2:58, 1080p, 313MB) + thumbnail.png. Obsidian 50_Outputs/야구사전/ 에 md+mp4+썸네일 저장(2026-07-13_*).
+- 리서치: 파울팁 = 배트 스침 + 포수 노바운드 정규 포구, 항상 스트라이크(2S면 삼진), 인플레이(도루 인정 — 고인물 훅). 파울 스트라이크 룰 NL 1901/AL 1903(로이 토마스 커트 남발이 계기), "Foul Tip" 용어는 1889 규칙집 첫 등장. KBO 사례 = 2020-05-14 롯데-두산 최주환 "따닥" 판정 → 판독 원심(삼진) → 김태형 감독 시즌 1호 퇴장. MLB 글로서리·위키·UmpireBible·19cbaseball·이재국 칼럼 교차.
+- **이미지 QC: 10장 전부 1회 통과, 재생성 0.** 판정·분기 다이어그램 주제였으나 no-text 강명시로 클린. Seedance 클립 2편(s01 훅·s07 판정 순간)도 텍스트 삽입 없이 통과 — 유니폼 클로즈업 없는 미디엄 샷 구도가 유효했던 듯.
+- Seedance MCP: generate_video 가 preset 추천 notice 반환 시 declined_preset_id 로 literal 재요청 (신규 대응 — "IN THE DARK" 프리셋 추천 2회 발생). 렌더 ~3분.
+- 분량: 대본 약 1,420자 → Puck 실측 177.1s → 최종 178.6s(2:58). Puck 약 480자/분 (STYLE "쉽게" 톤). Whisper 씬 분할 1회 통과(15~21s 균등).
+- 유료: Gemini 이미지 11회(본편10+썸네일1), TTS 1회, Seedance 2편. 다음 편 예고 = 낫아웃.
