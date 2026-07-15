@@ -1,5 +1,7 @@
 # 말리와 흥부와 놀부 — 최종 조립: 이미지 Ken Burns + 절정 클립 + 나레이션 + 자막 + BGM → MP4
 # 최종 출력 1280x720 (2026-07-15 사용자 지시 — 이 편부터 720p)
+# 자막 타이밍 A안 (2026-07-15 사용자 승인): 글자수 비례 추정 대신 whisper 단어 타임스탬프 실측으로 SRT 생성
+import json
 import subprocess
 from pathlib import Path
 
@@ -67,7 +69,55 @@ def split_sentences(text):
 scene_dir = BASE / "scenes"
 scene_dir.mkdir(exist_ok=True)
 
+
+def norm_sub(text):
+    return "".join(ch for ch in text if ch.isalnum())
+
+
+def measure_words(spans, a, b):
+    """대본 누적 글자 구간 [a,b)에 해당하는 실제 발화 (시작, 끝) 시각. 실패 시 None."""
+    ws = we = None
+    for s in spans:
+        if ws is None and s[1] > a:
+            ws = s
+        if s[0] < b:
+            we = s
+        else:
+            break
+    if ws is None or we is None or we[3] <= ws[2]:
+        return None
+    return ws[2], we[3]
+
+
+# whisper 단어 타임스탬프 로드 (없으면 기존 글자수 비례 폴백)
+# 주의: 전역 글자 누적 매핑은 whisper 오전사(대본과 글자수 차이)가 뒤로 누적되어 중반부터 밀림 —
+# 반드시 씬별 오디오 시간창으로 단어를 잘라 씬 안에서 로컬 재앵커링한다 (2026-07-15 검증).
+WORDS_JSON = BASE / "audio" / "word_timestamps.json"
+all_words = None
+if WORDS_JSON.exists():
+    all_words = json.loads(WORDS_JSON.read_text(encoding="utf-8"))
+    print(f"subtitle timing: measured ({len(all_words)} words, per-scene anchored)")
+else:
+    print("subtitle timing: proportional fallback (no word_timestamps.json)")
+
+
+def scene_spans(words, a_start, a_end):
+    """씬 오디오 구간 [a_start, a_end) 에 속한 단어들로 씬-로컬 글자 스팬 생성."""
+    out, acc = [], 0
+    for w in words:
+        if w["end"] <= a_start + 0.05 or w["start"] >= a_end - 0.05:
+            continue
+        n = len(norm_sub(w["word"]))
+        if n == 0:
+            continue
+        out.append((acc, acc + n, w["start"], w["end"]))
+        acc += n
+    return out
+
+
 srt_lines, cue_idx, t_cursor = [], 1, 0.0
+audio_cursor = 0.0    # 통짜 나레이션 기준 씬 시작 시각
+prev_cue_end = 0.0    # 자막 겹침 방지용 단조 클램프
 scene_files = []
 
 for i, (sid, text) in enumerate(SCENES.items()):
@@ -110,11 +160,33 @@ for i, (sid, text) in enumerate(SCENES.items()):
     sentences = split_sentences(text)
     total_chars = sum(len(s) for s in sentences)
     cue_t = t_cursor + AUDIO_DELAY_MS / 1000
+    spans = scene_spans(all_words, audio_cursor, audio_cursor + adur) if all_words else None
+    scene_char = 0  # 씬-로컬 글자 위치 (씬별 재앵커링)
     for s in sentences:
         cdur = adur * len(s) / total_chars
-        srt_lines.append(f"{cue_idx}\n{ts(cue_t)} --> {ts(min(cue_t + cdur, t_cursor + sdur))}\n{s}\n")
+        n = len(norm_sub(s))
+        m = measure_words(spans, scene_char, scene_char + n) if spans else None
+        scene_char += n
+        if m:
+            # 실측: 통짜 나레이션 시각 → 이 씬의 최종 타임라인 시각으로 변환 (씬 구간으로 클램프)
+            st = t_cursor + min(max(0.0, m[0] - audio_cursor), adur)
+            en = t_cursor + min(max(0.0, m[1] - audio_cursor), sdur)
+            if en - st < 0.3:
+                en = min(st + 0.5, t_cursor + sdur)
+        else:
+            # 폴백: 기존 글자수 비례 추정
+            st = cue_t
+            en = min(cue_t + cdur, t_cursor + sdur)
+        # 단조 클램프: 오전사로 인접 문장이 한 단어씩 겹치는 것 방지
+        if st < prev_cue_end:
+            st = prev_cue_end
+        if en < st + 0.3:
+            en = min(st + 0.5, t_cursor + sdur)
+        prev_cue_end = en
+        srt_lines.append(f"{cue_idx}\n{ts(st)} --> {ts(en)}\n{s}\n")
         cue_idx += 1
         cue_t += cdur
+    audio_cursor += adur
     t_cursor += sdur
 
 srt_path = BASE / "subs.srt"

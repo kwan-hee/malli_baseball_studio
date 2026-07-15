@@ -113,6 +113,8 @@ def generate_full():
 
 
 def split_scenes():
+    import json
+
     import whisper
 
     print("loading whisper large-v3 ...")
@@ -121,6 +123,14 @@ def split_scenes():
     words = [w for seg in result["segments"] for w in seg["words"]]
     if not words:
         sys.exit("whisper returned no words")
+
+    # 자막 실측 생성용(A안, 2026-07-15) — compose.py 가 글자수 비례 대신 이 실측으로 SRT 생성
+    (OUT / "word_timestamps.json").write_text(
+        json.dumps([{"word": w["word"], "start": w["start"], "end": w["end"]} for w in words],
+                   ensure_ascii=False),
+        encoding="utf-8",
+    )
+    print(f"word_timestamps.json: {len(words)} words")
 
     offsets, pos = {}, 0
     for sid, text in SCENES.items():
