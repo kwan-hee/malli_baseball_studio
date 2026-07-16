@@ -138,29 +138,53 @@ def split_scenes():
     )
     print(f"word_timestamps.json: {len(words)} words")
 
-    offsets, pos = {}, 0
-    for sid, text in SCENES.items():
-        offsets[sid] = pos
-        pos += len(norm(text))
-    total_norm = pos
-
-    sids = list(SCENES.keys())
-    boundaries = {sids[0]: 0.0}
-    next_i, acc = 1, 0
-    for w in words:
-        if next_i >= len(sids):
-            break
-        acc += len(norm(w["word"]))
-        if acc >= offsets[sids[next_i]]:
-            boundaries[sids[next_i]] = max(0.0, w["end"] - BOUNDARY_MARGIN)
-            next_i += 1
-    if next_i < len(sids):
-        sys.exit(f"boundary not found for {sids[next_i]} (transcribed {acc}/{total_norm} chars)")
-
     with wave.open(str(FULL_WAV), "rb") as wf:
         pcm = wf.readframes(wf.getnframes())
     total_dur = len(pcm) / (SR * BITS // 8)
     bps = SR * BITS // 8
+
+    # 씬 경계 = 각 씬 첫 구절(정규화 14자)을 whisper 단어 스트림에서 접두어 퍼지 매칭 (2026-07-16 상시화).
+    # 기존 누적 글자 방식은 whisper 오전사/환각으로 뒤 씬 경계가 통째로 밀려 붕괴 → 접두어 매칭으로 교체.
+    # 매칭 실패(환각 구간)면 글자수 비례 추정으로 graceful fallback (붕괴 대신 근사치). 필요시 fix_boundaries 로 보정.
+    import difflib
+
+    stream_times, stream_chars = [], []
+    for w in words:
+        for ch in norm(w["word"]):
+            stream_chars.append(ch)
+            stream_times.append(w["start"])
+    S = "".join(stream_chars)
+
+    sids = list(SCENES.keys())
+    chars = {sid: len(norm(SCENES[sid])) for sid in sids}
+    total_c = sum(chars.values())
+    PREFIX_LEN, WINDOW = 14, 20.0
+
+    boundaries = {sids[0]: 0.0}
+    acc, prev_b = 0, 0.0
+    for k, sid in enumerate(sids[1:], start=1):
+        acc += chars[sids[k - 1]]
+        est = total_dur * acc / total_c
+        prefix = norm(SCENES[sid])[:PREFIX_LEN]
+        cands, best_r, best_t = [], 0.0, None
+        for i in range(len(S) - PREFIX_LEN):
+            t = stream_times[i]
+            if abs(t - est) > WINDOW or t <= prev_b + 1.0:
+                continue
+            r = difflib.SequenceMatcher(None, S[i:i + PREFIX_LEN], prefix).ratio()
+            if r >= 0.75:  # 후렴 반복 함정 방지: 0.75+ 후보 중 추정치 근접 우선
+                cands.append((t, r))
+            if r > best_r:
+                best_r, best_t = r, t
+        if cands:
+            best_t, best_r = min(cands, key=lambda c: abs(c[0] - est))
+        if best_t is None or best_r < 0.55:
+            b = max(prev_b + 1.0, est - BOUNDARY_MARGIN)  # 환각 구간 — 비례 폴백
+            print(f"{sid}: prefix match weak (best={best_r:.2f}) — proportional fallback @ {b:.2f}")
+        else:
+            b = max(prev_b + 1.0, best_t - BOUNDARY_MARGIN)
+        boundaries[sid] = b
+        prev_b = b
 
     for i, sid in enumerate(sids):
         start = boundaries[sid]
