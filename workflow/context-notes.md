@@ -710,3 +710,16 @@
 - **버그 수정(재사용 가치)**: make_narration.py 가 whisper 씬분할 후 폴백 경고 print의 em-dash(—, —)로 cp949 콘솔 UnicodeEncodeError 크래시(exit 1). gen_clips_veo.py엔 있던 `sys.stdout.reconfigure(encoding="utf-8", errors="replace")` 가 make_narration엔 누락돼 있었음 → 상단에 추가. **TTS(narration_full.wav)는 캐시라 재실행 시 재호출 없이 whisper만 재전사**하면 복구(유료 낭비 0). 다음 편은 이 폴더 복사로 자동 상속.
 - 제목: CTR 우선 "도깨비감투, 쓰면 감쪽같이 사라진다고? | 전래동화".
 - 저장: output/storybook/말리와_도깨비_감투/ + Obsidian 50_Outputs/말리동화/ (mp4+썸네일+md). TALE_LIBRARY ✅ 등재.
+
+## 2026-07-19 · 야구사전 23편 "승계주자" 제작 완료
+
+- 흐름: `/야구사전 승계주자` 스킬로 리서치+대본+SEO md 먼저 → 사용자 "생성해" → 태그업 22편 템플릿으로 영상 제작.
+- 웹 리서치 사실검증: 승계주자(inherited runner)=구원투수 등판 시 이미 루상에 있던 주자, 득점하면 **앞 투수 자책점**(구원투수 방어율엔 안 잡힘). MLB 1940 규칙44 명문화(1950 재정비, Retrosheet/BR). 속어 '분식'(분식회계 빗댐). KBO 2016 승계주자 실점 최다 박정진·박근홍 각 21점(야구공작소). 지표 구원율(Rel%). 위키·MLB.com 교차. 단일경기 일자 사례는 확인불가로 시즌집계.
+- 이미지 QC: 10장 1차 나노바나나2 가로, 재생성 0. 숫자·실존선수 없음(s01 주자 유니폼 미세 등번호 흐림 무해). s03 자책점 화살표가 현 투수→떠난 앞투수 가리킴·s08 앞은 방패아우라(깨끗)/뒤는 실점쇄도('분식' 대비) 개념 명확.
+- **클립 = Higgsfield MCP Seedance 2.0 (문서정책·메모리 [[seedance-clips-via-mcp]] 준수, 처음부터 MCP).** s01(만루 물려받고 실점 훅)·s06(KBO 승계주자 홈 쇄도). 절차: media_upload(files[] presigned)→curl PUT 200→media_confirm→generate_video(model=seedance_2_0, start_image, width1280 height720, get_cost 프리플라이트 22.5크레딧/클립)→job_status(sync) 폴링→rawUrl(d8j0ntlcm..cloudfront) curl 다운로드. **s06서 프리셋 추천("IN THE DARK") 뜸→declined_preset_id로 literal 강제.** 렌더 ~2.5분. Higgsfield 5968→5923(2×22.5=45).
+- TTS: Puck 198.1s(3:18, 빠름). 씬 경계 전부 접두어 매칭 성공(16~25s), 비례 폴백 0. 자막 s01·s06·s08 프레임 정합, 사실 정확(박정진·박근홍).
+- 분량: 대본 약 1,530자 → 3:18. 최종 3:20(180MB, 720p, 자막 50 cues 실측).
+- **썸네일 재생성 1회**: 1차 배경에 AI가 "scoring" 영문 2개 삽입 → 프롬프트에 "NO English words such as scoring/safe, NO speech bubbles" 강화 후 재생성 성공. drawtext "방어율 0.00인데 / 점수를 다 줬다?!"(우측, 노랑+흰). **교훈: 야구 썸네일 배경도 영문 텍스트 새어나옴 → 구체 영단어 금지 명시.**
+- 제목: CTR 우선 "승계주자, 다 불러들여도 방어율 0.00? | 야구 룰".
+- 다음 편 예고 = 홀드.
+- 저장: output/baseball/승계주자/ + Obsidian 50_Outputs/야구사전/ (mp4+썸네일+md). 유료: Gemini 이미지 10+썸네일 2(재생성 1)+TTS 1, Seedance 2×22.5.
