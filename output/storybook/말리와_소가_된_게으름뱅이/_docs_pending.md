@@ -12,6 +12,8 @@
 - s04 재생성 시 Veo 3.1 Fast 수요폭주(op error code 14) → 스크립트 폴백으로 Veo 3.1 Lite 성공, 화질 차이 육안 무.
 - **★Whisper 환각(3.8 TTS 음성은 정상)**: 전체 269s 전사에서 54~85s 가 "chronoscmd/Shock at" 등 쓰레기 → s04 접두어 매칭 실패(0.21) → 비례 폴백 64.23s(오답, s03 마지막 대사가 s04로 넘어감). **해당 구간만 잘라 condition_on_previous_text=False 로 재전사하면 정상.** 편 폴더 `fix_boundaries.py`(경계 66.97s 무음 스냅) + `fix_words.py`(48~92s 단어 타임스탬프 교체, 원본 .orig.json 백업). 교체 전 compose 자막은 해당 구간 0.5s 큐로 붕괴했었음 — **비례 폴백 로그가 뜨면 자막도 반드시 확인.**
 - 공통 로직 개선 후보(미적용, 사용자 결정 필요): ① split_scenes 에서 prefix match weak 시 해당 구간 자동 재전사 ② compose 클립 반복 재생 — 8s 클립이 30s 씬에서 루프해 변신 전 대사에 소가 보이는 순간 발생(클립 1회 재생 후 마지막 프레임 정지 or Ken Burns 이어붙이기 검토).
+- **★BGM 규칙 누락 사고**: 템플릿 폴더(41편) 통째 복사 시 bgm.mp3 가 옛 곡(Whisper of the Wind)으로 따라옴 → 42편부터 적용해야 할 동화 전용 b1·b2 규칙을 놓쳐 1차 완성본에 옛 곡이 들어감. 사용자 지적("b1,b2 순서대로, 티 안나게") 후 재조립. **템플릿 복사 직후 bgm.mp3 를 assets/bgm/storybook 기반으로 교체하는 것을 체크 항목으로.**
+- **BGM 이음새**: 합본 bgm_storybook.mp3(234.6s) < 본편(270.6s) → compose 의 stream_loop 되감기 지점에서 b2 끝→b1 시작이 크로스페이드 없이 끊김. 편 폴더 `make_bgm.py` 로 b1→b2→b1 을 전부 acrossfade 3s(tri) 연결한 356.4s 파일 생성 → 영상 안에 루프 지점 없음. 곡 음량차(b1 -16.8 / b2 -15.4 LUFS)는 loudnorm(1-pass 동적이라 출렁임) 대신 측정값 기준 고정 게인으로 -16 LUFS 통일. 기존 템플릿 곡(-12.2)보다 약 4dB 낮아 더 은은함(compose 볼륨 0.15 무수정). 전환부 1초 RMS 확인: 급격한 튐 없음, 2~3초 완만한 dip 만. **본편이 4분을 넘는 편은 bgm_storybook.mp3 대신 make_bgm.py 방식 권장.**
 - Gemini 4 재확인(사용자 요청): models.list 에 Gemini 4 는 `gemini-4-argon`(텍스트 전용) 하나뿐 → 교체 지점 없음. 이미지 `gemini-3-pro-image`(정식판) 존재 — 다음 편 템플릿 교체 여부 사용자 결정 대기.
 - 산출: 4:31(270.6s), 클립 s04·s09, 쇼츠 s04 단독 30.1s, 썸네일 "탈을 썼더니, / 소가 됐다?!". 베스트 제목 "소가 된 게으름뱅이, 탈을 썼더니 소가?! | 전래동화". 브랜치 worktree-storybook-lazy-ox.
 
