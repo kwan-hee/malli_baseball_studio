@@ -53,6 +53,7 @@ python compose.py           # ffmpeg 최종 조립 → {편명}_final.mp4
 ## 아키텍처 주의점
 
 - "말리"는 채널마다 다른 존재: 동화 = 강아지 주인공(03_MALLI.md), 야구 = 해설자 페르소나(04_BASEBALL.md). 혼용 금지.
+- 강의 영상: **가르치는 사람은 릴리 선생**, 말리는 기준 시트 그대로의 강아지 보조(안경·지시봉 등 선생님 소품 금지, 2026-10-22 사용자 확정)
 - 대본 텍스트의 단일 출처는 `make_narration*.py` 의 SCENES dict — compose.py 가 import 해서 자막(SRT)도 여기서 생성
 - Google Flow는 웹 자동화로 조작하되 **로컬 파일 업로드만 사용자 수동** (브라우저 보안 제한)
 - Higgsfield MCP 503 장애 시: higgsfield.ai/assets 웹에서 `<video>` src 추출해 curl 다운로드 (context-notes 참조)
