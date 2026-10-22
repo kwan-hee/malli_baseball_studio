@@ -29,7 +29,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```bash
 python gen_images.py        # 씬 이미지 생성 (Gemini, API 키는 C:\youtube_longform_agent\.env 재사용)
-python make_narration.py    # Gemini TTS 나레이션 (동화: make_narration_v2.py 가 최신 패턴)
+python make_narration.py    # Gemini TTS 나레이션 (동화: 41편 말리와_욕심쟁이_개/make_narration.py = 3.8 TTS 최신 패턴)
 python compose.py           # ffmpeg 최종 조립 → {편명}_final.mp4
 ```
 
@@ -39,7 +39,7 @@ python compose.py           # ffmpeg 최종 조립 → {편명}_final.mp4
 
 ## 확정된 제작 규칙 (어기면 사용자가 되돌림)
 
-- **TTS는 Gemini TTS + 성우 연기 지시문** (동화 Kore / 야구 Puck). Edge TTS는 기계적이라 쿼터 폴백 전용 — 상세 docs/07_AUDIO.md
+- **TTS는 Gemini TTS + 성우 연기 지시문** (동화 Kore / 야구 Puck / 강의 진행자 릴리 선생 Leda). Edge TTS는 기계적이라 쿼터 폴백 전용 — 상세 docs/07_AUDIO.md
 - **TTS는 전체 대본 단일 호출로 생성** (씬별 호출 금지 — 호출마다 톤이 달라져 목소리가 씬마다 바뀜. Whisper 타임스탬프로 씬 분할)
 - **나레이션에 행동 지문 금지** ("폴짝폴짝 뛰어갔어요" X). 행동은 화면이 보여주고, 나레이션은 대사+감정
 - **자막은 바닥 밀착** MarginV=10 (두 채널 공통)
@@ -48,6 +48,7 @@ python compose.py           # ffmpeg 최종 조립 → {편명}_final.mp4
 - 릴리 선생 이미지 프롬프트는 `prompts/lily_character.txt` 에서 파생, `images/style_ref/lily.png` 를 multimodal 참조로 첨부 (2026-10-22 확정)
 - 야구사전 삽화에 실존 선수 얼굴 금지 (유니폼 색·상황으로 표현)
 - 영상 플랫폼: 동화 = Google Flow(Veo 3.1) 우선 / 야구 = Higgsfield(Seedance) 우선 — docs/01_COST_POLICY.md
+- **Higgsfield는 웹으로만** (2026-10-22): MCP·API 직접 호출 대신 `hfmalli` + `scripts/hf_web_clips.py` (yookwanhee6 전용 Chrome) — docs/14_HIGGSFIELD_WEB.md
 
 ## 아키텍처 주의점
 

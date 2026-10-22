@@ -995,6 +995,18 @@
 - 검증: 키 없음·잘못된 키·캐릭터 시트 누락 3종 오류 재현(무료) + 정상 실행 1회(gemini-3-pro-image-preview 1장 1376x768, 3.8 TTS Kore 9.7s, whisper small 받아쓰기 = 대본 일치). 나레이션 분량은 초당 4자 기준으로 전 구간 배정 시간 이내.
 - 함정: GeminiPool() 이 stdout 에 안내 문구를 출력 → 셸에서 키를 꺼낼 때 `| tail -1` 필요.
 
+## 2026-10-22 — 강의 진행자 「릴리 선생」(20대 초반 여성 강사) TTS 보이스 후보 샘플
+- 사용자 요청: 3.8 TTS 에서 말리처럼 AI 티 없고 감정 풍부한 강의용 목소리 찾기. 문서에 릴리 선생 설정 기록은 아직 없음.
+- `output/storybook/_tts_voice_lily/` 에 9종(Leda·Zephyr·Aoede·Laomedeia·Autonoe·Erinome·Sulafat·Despina + 기준 Kore) 생성. 같은 대본(강의 도입 2문단, 24~29s), 41편과 같은 raw REST + 문단별 speech_metadata.style. 스크립트는 세션 scratchpad(lily_voice_test.py).
+- whisper small 전사: 9종 모두 지시문 낭독 없음, 대본대로 발화. Despina 는 "릴리"가 "닐리"로 전사됨(이름 발음 확인 필요).
+- **[확정] 사용자: "릴리 목소리를 Leda 로 고정"** → docs/07_AUDIO.md·CLAUDE.md 보이스 규칙에 반영. 샘플 기준 Leda 는 9종 중 가장 느림(28.9s), 장편 대본에서 길이가 늘어날 수 있음.
+
+## 2026-10-22 Higgsfield 웹 방식 도입 (MCP·API 없이)
+- 사용자 지시: 말리동화 영상은 Orca에서 Higgsfield MCP 연결 없이 Higgsfield 웹으로 직접 만든다. 계정은 yookwanhee6@gmail.com.
+- 구현: 전용 Chrome(프로필 ~/.higgsfield-accounts/malli-yookwanhee6/chrome-profile, 포트 9341) + 명령 `~/.local/bin/hfmalli` + `scripts/hf_web_clips.py`. 상세 docs/14_HIGGSFIELD_WEB.md.
+- 기본: Kling 3.0, 5초, 720p, 16:9, 소리 끔. gen_clips_veo.py 의 CLIP_PROMPTS 재사용, 결과 clips/sXX_1080p.mp4 (compose 그대로).
+- 2차 게이트 유지: 시험 실행(크레딧 0)으로 버튼 비용 확인 → 승인 → --submit. 재제출 금지, 접수 불명확은 UNKNOWN.
+
 ## 2026-10-22 — 릴리 선생 기준 이미지 확정
 - **[확정] 사용자: "lily.png 기준 이미지로 쓸게"** → 릴리 씬 이미지는 `images/style_ref/lily.png` 를 multimodal 참조로 첨부(말리의 malli_reference.png 와 같은 방식). 얼굴 실사 사진은 더 이상 필요 없음.
 - `prompts/lily_character.txt` 는 잘림(503B, "smal…") 상태였다가 사용자가 재업로드(983B, 브로치까지 완결). 이 파일은 캐릭터 시트 재생성용(얼굴 사진 + 말리 시트 첨부 전제) — 씬 프롬프트의 외형 묘사는 여기서 파생.

@@ -4,6 +4,8 @@
 
 - **롱폼 기본 (두 채널 모두): Gemini TTS** `gemini-2.5-flash-preview-tts` + **성우 연기 지시문 필수**
   - 말리 동화: 보이스 `Kore` + 지시문 "어린이 동화 구연 성우처럼 밝고 사랑스럽게, 감정 풍부하게. 말리 대사는 신나게, 토토는 느긋하게, 슬픈 장면은 촉촉하게" (v2 검증 완료 — make_narration_v2.py)
+  - **말리 동화 2026-10-15~: `gemini-3.8-flash-tts`** (사용자 A/B 승인). 템플릿 = 41편 `말리와_욕심쟁이_개/make_narration.py`. 지시문을 대본 앞에 붙이면 낭독해 버리므로 Interactions API `speech_metadata.style` 로 씬별 분리(BASE_STYLE + SCENE_STYLES), 호출은 1회 유지. SDK 버그로 raw REST 사용. 상세 context-notes 2026-10-15
+  - **릴리 선생(강의 진행자, 20대 초반 여성 강사): 보이스 `Leda` 고정 (2026-10-22 사용자 확정 — 3.8 샘플 9종 비교, `output/storybook/_tts_voice_lily/01_Leda.wav`)**. 모델 `gemini-3.8-flash-tts`, 호출 방식은 동화 3.8 템플릿과 동일. 기본 지시문(BASE_STYLE) "20대 초반의 밝고 친근한 여자 강사, 학생들 앞에서 실제로 강의하듯 자연스럽게. 책 읽는 말투가 아니라 말하듯이, 감정 풍부하게, 웃음기와 호기심이 살아 있게, 자연스러운 속도" + 문단별 감정 지시. 말리(Kore)와 혼용 금지.
   - 야구사전: 남성 보이스 **`Puck` (2026-07-07 사용자 확정 — 샘플 3종 비교)** + 지시문 "야구 20년 본 동네 형 같은 해설자처럼 친근하고 리듬감 있게, 궁금증 유발 구간은 톤을 올려서"
   - 대본의 행동 지문은 나레이션에서 제거 — 행동은 화면이 보여줌 (2026-07-07 사용자 피드백)
 - 무료 폴백 (Gemini 쿼터 소진 시만): Edge TTS — 동화 SunHiNeural -5% / 야구 InJoonNeural. **기계적으로 들려서 기본 사용 금지.**
@@ -17,7 +19,8 @@
 
 ## BGM
 
-- 말리 동화 기존 사용곡: `Whisper of the Wind.mp3` @ 볼륨 15% (원본: C:\youtube_longform_agent\assets\bgm\)
+- **말리 동화 전용 BGM 폴더: `assets/bgm/storybook/`** (2026-10-15 사용자 지정, 신규곡 2곡). b1.mp3(2:05)+b2.mp3(1:53)를 3초 크로스페이드로 이은 `bgm_storybook.mp3`(3:55)를 새 편 에피소드 폴더에 `bgm.mp3` 로 복사 → compose 의 stream_loop 으로 b1→b2→b1→b2… 영상 끝까지 루프 (2026-10-15 사용자: "b1,b2 이런식으로 루프") (compose.py·make_shorts.py 는 `bgm.mp3` 고정 경로라 코드 수정 불필요). 음원은 .gitignore 로 리포 제외
+- 말리 동화 이전 사용곡(41편까지): `Whisper of the Wind.mp3` @ 볼륨 15% (원본: C:\youtube_longform_agent\assets\bgm\)
 - 야구사전 기존 사용곡: `The Diamond.mp3` @ 볼륨 15%, 루프 + 끝 2초 페이드아웃 (원본: C:\야구사전\output\{편명}\bgm\)
 - 신규곡 1순위: 유튜브 오디오 라이브러리 (무료, 저작권 안전)
 - 채널 분위기: 야구사전 — 경쾌·리듬감 / 말리 동화 — 잔잔·오르골 계열

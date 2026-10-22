@@ -18,6 +18,9 @@
 | 나레이션·BGM·효과음 | docs/07_AUDIO.md |
 | ffmpeg 명령 실행 | docs/08_FFMPEG.md |
 | 영상 제목 최적화 (SEO·CTR·조회수 등급·베스트 제목) | docs/11_TITLE_ENGINE.md (또는 /제목 스킬). 야구·동화 각 편 SEO 단계에서 자동 실행 |
+| superpowers 스킬 언제 쓸지 (기획·디버깅·검증) | docs/12_SUPERPOWERS_MAP.md |
+| 씬 점수표 채점 + 영상/이미지 배정 | docs/13_SCENE_SCORING.md |
+| Higgsfield 영상 클립 생성 (MCP·API 없이 웹으로, Orca 포함) | docs/14_HIGGSFIELD_WEB.md — `hfmalli` + `scripts/hf_web_clips.py`. Higgsfield MCP·API 직접 호출 금지 (2026-10-22) |
 
 ## 폴더 경계
 
