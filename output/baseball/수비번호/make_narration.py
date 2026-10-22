@@ -9,9 +9,7 @@ from pathlib import Path
 
 # Whisper가 subprocess로 ffmpeg를 호출 — WinGet 설치 경로를 PATH에 추가
 FFMPEG_DIR = (
-    r"C:\Users\user\AppData\Local\Microsoft\WinGet\Packages"
-    r"\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe"
-    r"\ffmpeg-8.1.1-full_build\bin"
+    "/opt/homebrew/bin:/usr/local/bin"
 )
 os.environ["PATH"] = FFMPEG_DIR + os.pathsep + os.environ.get("PATH", "")
 
@@ -22,7 +20,7 @@ BASE = Path(__file__).parent
 OUT = BASE / "audio"
 OUT.mkdir(exist_ok=True)
 
-ENV = Path(r"C:\youtube_longform_agent\.env")
+ENV = Path(next(str(_p / "youtube_longform_agent") for _p in __import__("pathlib").Path(__file__).resolve().parents if (_p / "youtube_longform_agent").is_dir()) + "/.env")
 API_KEY = None
 for line in ENV.read_text(encoding="utf-8").splitlines():
     line = line.strip()

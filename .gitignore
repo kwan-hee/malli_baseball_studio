@@ -13,8 +13,22 @@ images/**/*.jpg
 # 캐릭터 시트는 예외 (작음, 필수 레퍼런스)
 !images/style_ref/malli_reference.png
 
+# npx skills 설치물 (외부 스킬 — 리포 추적 제외)
+.agents/
+.claude/skills/
+
 # 임시/상태
 .omc/
 __pycache__/
 *.log
 *.ttf
+
+# BGM 원본 (저작권·용량 — 리포 제외)
+assets/**/*.mp3
+assets/**/*.wav
+
+# 맥 이식본: API 키·MS 폰트·macOS 메타파일 (리포 제외)
+youtube_longform_agent/
+fonts/
+.DS_Store
+._*

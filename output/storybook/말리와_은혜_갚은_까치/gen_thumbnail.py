@@ -6,16 +6,16 @@ import time
 from pathlib import Path
 
 # 다중 구글 계정 Gemini 키 자동 페일오버 풀 (429 소진 시 다음 키로 전환)
-sys.path.insert(0, r"C:\youtube_longform_agent")
+sys.path.insert(0, next(str(_p / "youtube_longform_agent") for _p in __import__("pathlib").Path(__file__).resolve().parents if (_p / "youtube_longform_agent").is_dir()))
 from gemini_pool import GeminiPool, is_quota_error
 from google.genai import types
 
 BASE = Path(__file__).parent
 OUT = BASE / "thumb_bg.png"
 
-REF = Path(r"C:\PROJECT\images\style_ref\malli_reference.png")
-STYLE_REF = Path(r"C:\PROJECT\images\style_ref\ghibli_scene_ref.png")  # 지브리 스타일 앵커
-STYLE = Path(r"C:\PROJECT\prompts\ghibli_style.txt").read_text(encoding="utf-8").strip()
+REF = Path(str([_p for _p in __import__("pathlib").Path(__file__).resolve().parents if (_p / "AGENTS.md").is_file()][-1] / "images/style_ref/malli_reference.png"))
+STYLE_REF = Path(str([_p for _p in __import__("pathlib").Path(__file__).resolve().parents if (_p / "AGENTS.md").is_file()][-1] / "images/style_ref/ghibli_scene_ref.png"))  # 지브리 스타일 앵커
+STYLE = Path(str([_p for _p in __import__("pathlib").Path(__file__).resolve().parents if (_p / "AGENTS.md").is_file()][-1] / "prompts/ghibli_style.txt")).read_text(encoding="utf-8").strip()
 
 MODEL = "gemini-3-pro-image-preview"
 FALLBACK_MODEL = "gemini-2.5-flash-image"

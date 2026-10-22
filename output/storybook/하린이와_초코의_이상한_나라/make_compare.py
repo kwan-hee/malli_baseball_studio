@@ -10,8 +10,8 @@ BG = (250, 246, 238)
 FONT = str(BASE / "font.ttf")
 
 PAIRS = {
-    "harin": (Path(r"C:\PROJECT\images\portraits\daughter.png"), "하린"),
-    "choco": (Path(r"C:\PROJECT\family_test\강아지.jpg"), "초코"),
+    "harin": (Path(str([_p for _p in __import__("pathlib").Path(__file__).resolve().parents if (_p / "AGENTS.md").is_file()][-1] / "images/portraits/daughter.png")), "하린"),
+    "choco": (Path(str([_p for _p in __import__("pathlib").Path(__file__).resolve().parents if (_p / "AGENTS.md").is_file()][-1] / "family_test/강아지.jpg")), "초코"),
 }
 
 

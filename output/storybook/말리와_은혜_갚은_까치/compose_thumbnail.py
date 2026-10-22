@@ -5,9 +5,7 @@ from pathlib import Path
 
 BASE = Path(__file__).parent
 FFMPEG = (
-    r"C:\Users\user\AppData\Local\Microsoft\WinGet\Packages"
-    r"\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe"
-    r"\ffmpeg-8.1.1-full_build\bin\ffmpeg.EXE"
+    "ffmpeg"
 )
 
 FONT = "font.ttf"  # MemomentKkukkukk (로컬 상대경로 — 콜론 이스케이프 회피)

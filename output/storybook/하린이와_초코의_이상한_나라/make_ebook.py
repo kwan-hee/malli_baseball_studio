@@ -23,9 +23,7 @@ OUT = BASE / "ebook"
 MEDIA = OUT / "_media"
 MEDIA.mkdir(parents=True, exist_ok=True)
 FFMPEG = (
-    r"C:\Users\user\AppData\Local\Microsoft\WinGet\Packages"
-    r"\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe"
-    r"\ffmpeg-8.1.1-full_build\bin\ffmpeg.EXE"
+    "ffmpeg"
 )
 PW, PH = 1920, 1080  # 페이지 크기 (16:9 가로)
 IMG_W, IMG_H = 1440, 804  # 그림 영역 — 아래 276px 는 글 영역

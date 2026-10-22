@@ -13,7 +13,7 @@ OUT = BASE / "images"
 OUT.mkdir(exist_ok=True)
 
 # 다중 구글 계정 Gemini 키 자동 페일오버 풀 (429 소진 시 다음 키로 전환)
-sys.path.insert(0, r"C:\youtube_longform_agent")
+sys.path.insert(0, next(str(_p / "youtube_longform_agent") for _p in __import__("pathlib").Path(__file__).resolve().parents if (_p / "youtube_longform_agent").is_dir()))
 from gemini_pool import GeminiPool, is_quota_error
 
 MODEL = "gemini-3-pro-image-preview"

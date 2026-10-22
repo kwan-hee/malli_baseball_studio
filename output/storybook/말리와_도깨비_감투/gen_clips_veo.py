@@ -10,7 +10,7 @@ import time
 import urllib.request
 from pathlib import Path
 
-sys.path.insert(0, r"C:\youtube_longform_agent")
+sys.path.insert(0, next(str(_p / "youtube_longform_agent") for _p in __import__("pathlib").Path(__file__).resolve().parents if (_p / "youtube_longform_agent").is_dir()))
 from gemini_pool import GeminiPool, is_quota_error
 from google.genai import types
 
@@ -42,7 +42,7 @@ class VeoInProgress(Exception):
 
 HF_BASE = "https://platform.higgsfield.ai"
 SEEDANCE_MODEL = "bytedance/seedance/v1/pro/image-to-video"
-HF_KEY_GLOB = r"C:\말리\HF_API_Key*.txt"  # 키 파일(값은 로그에 안 남김). 환경변수 HF_API_KEY 우선.
+HF_KEY_GLOB = next(str(_p / "youtube_longform_agent") for _p in __import__("pathlib").Path(__file__).resolve().parents if (_p / "youtube_longform_agent").is_dir()) + "/HF_API_Key*.txt"  # 키 파일(값은 로그에 안 남김). 환경변수 HF_API_KEY 우선.
 HF_UA = "malli-storybook/1.0 (python)"    # 기본 urllib UA 는 Cloudflare 1010 차단 → 명시 필수
 
 GHIBLI = (

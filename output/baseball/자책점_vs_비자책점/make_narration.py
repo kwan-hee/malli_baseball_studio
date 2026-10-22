@@ -12,7 +12,7 @@ BASE = Path(__file__).parent
 OUT = BASE / "audio"
 OUT.mkdir(exist_ok=True)
 
-ENV = Path(r"C:\youtube_longform_agent\.env")
+ENV = Path(next(str(_p / "youtube_longform_agent") for _p in __import__("pathlib").Path(__file__).resolve().parents if (_p / "youtube_longform_agent").is_dir()) + "/.env")
 API_KEY = None
 for line in ENV.read_text(encoding="utf-8").splitlines():
     line = line.strip()

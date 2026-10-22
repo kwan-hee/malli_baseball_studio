@@ -5,15 +5,13 @@ from pathlib import Path
 
 BASE = Path(__file__).parent
 FFMPEG = (
-    r"C:\Users\user\AppData\Local\Microsoft\WinGet\Packages"
-    r"\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe"
-    r"\ffmpeg-8.1.1-full_build\bin\ffmpeg.EXE"
+    "ffmpeg"
 )
 
 # 콜론 이스케이프 회피 위해 폰트를 로컬로 복사해 상대경로 참조
 FONT = BASE / "malgunbd.ttf"
 if not FONT.exists():
-    shutil.copy(r"C:\Windows\Fonts\malgunbd.ttf", FONT)
+    shutil.copy(str([_p for _p in __import__("pathlib").Path(__file__).resolve().parents if (_p / "AGENTS.md").is_file()][-1] / "fonts/malgunbd.ttf"), FONT)
 
 MAIN = "같은 3할인데"
 SUB = "실력이 왜 다를까?"

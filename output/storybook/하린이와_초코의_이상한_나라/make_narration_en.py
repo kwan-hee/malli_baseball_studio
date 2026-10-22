@@ -19,9 +19,7 @@ sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 # Whisper가 subprocess로 ffmpeg를 호출 — WinGet 설치 경로를 PATH에 추가
 FFMPEG_DIR = (
-    r"C:\Users\user\AppData\Local\Microsoft\WinGet\Packages"
-    r"\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe"
-    r"\ffmpeg-8.1.1-full_build\bin"
+    "/opt/homebrew/bin:/usr/local/bin"
 )
 os.environ["PATH"] = FFMPEG_DIR + os.pathsep + os.environ.get("PATH", "")
 
@@ -32,7 +30,7 @@ OUT = BASE / "audio_en"
 OUT.mkdir(exist_ok=True)
 
 # 다중 구글 계정 Gemini 키 자동 페일오버 풀 (429 소진 시 다음 키로 전환)
-sys.path.insert(0, r"C:\youtube_longform_agent")
+sys.path.insert(0, next(str(_p / "youtube_longform_agent") for _p in __import__("pathlib").Path(__file__).resolve().parents if (_p / "youtube_longform_agent").is_dir()))
 from gemini_pool import GeminiPool, is_quota_error
 
 # 2026-10-15: gemini-3.8-flash-tts 로 교체 (사용자 A/B 청취 후 승인).

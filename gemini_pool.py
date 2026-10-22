@@ -8,8 +8,8 @@ from pathlib import Path
 
 from google import genai
 
-ENV = Path(r"C:\youtube_longform_agent\.env")
-STATE = Path(r"C:\youtube_longform_agent\.gemini_active.json")
+ENV = Path(next(str(_p / "youtube_longform_agent") for _p in __import__("pathlib").Path(__file__).resolve().parents if (_p / "youtube_longform_agent").is_dir()) + "/.env")
+STATE = Path(next(str(_p / "youtube_longform_agent") for _p in __import__("pathlib").Path(__file__).resolve().parents if (_p / "youtube_longform_agent").is_dir()) + "/.gemini_active.json")
 TIMEOUT_MS = 300000
 
 

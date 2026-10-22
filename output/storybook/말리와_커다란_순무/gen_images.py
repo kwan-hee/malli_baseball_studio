@@ -12,7 +12,7 @@ OUT = BASE / "images"
 OUT.mkdir(exist_ok=True)
 
 # API 키: 기존 파이프라인 .env 재사용
-ENV = Path(r"C:\youtube_longform_agent\.env")
+ENV = Path(next(str(_p / "youtube_longform_agent") for _p in __import__("pathlib").Path(__file__).resolve().parents if (_p / "youtube_longform_agent").is_dir()) + "/.env")
 API_KEY = None
 for line in ENV.read_text(encoding="utf-8").splitlines():
     line = line.strip()
@@ -22,7 +22,7 @@ for line in ENV.read_text(encoding="utf-8").splitlines():
 if not API_KEY:
     sys.exit("GEMINI_API_KEY not found in .env")
 
-REF = Path(r"C:\PROJECT\images\style_ref\malli_reference.png")
+REF = Path(str([_p for _p in __import__("pathlib").Path(__file__).resolve().parents if (_p / "AGENTS.md").is_file()][-1] / "images/style_ref/malli_reference.png"))
 
 MODEL = "gemini-3-pro-image-preview"
 FALLBACK_MODEL = "gemini-2.5-flash-image"  # 504 연발 시 폴백 (7편 검증)

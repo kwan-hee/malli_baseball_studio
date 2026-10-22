@@ -8,7 +8,7 @@ import time
 from pathlib import Path
 
 # 다중 구글 계정 Gemini 키 자동 페일오버 풀 (429 소진 시 다음 키로 전환)
-sys.path.insert(0, r"C:\youtube_longform_agent")
+sys.path.insert(0, next(str(_p / "youtube_longform_agent") for _p in __import__("pathlib").Path(__file__).resolve().parents if (_p / "youtube_longform_agent").is_dir()))
 from gemini_pool import GeminiPool, is_quota_error
 from google.genai import types
 
@@ -18,7 +18,7 @@ OUT.mkdir(exist_ok=True)
 
 CHAR = BASE / "characters"
 REFS = [CHAR / "harin_sheet.png", CHAR / "choco_sheet.png", CHAR / "alice_sheet.png"]
-MOM_REF = Path(r"C:\PROJECT\images\portraits\mom.png")  # s10 전용
+MOM_REF = Path(str([_p for _p in __import__("pathlib").Path(__file__).resolve().parents if (_p / "AGENTS.md").is_file()][-1] / "images/portraits/mom.png"))  # s10 전용
 STYLE = (
     "soft hand-painted watercolor children's picture book illustration, gentle wet-on-wet watercolor washes "
     "with visible paper texture, delicate thin pencil-like outlines, warm pastel palette, soft rounded cute "

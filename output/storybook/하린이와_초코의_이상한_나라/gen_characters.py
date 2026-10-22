@@ -6,7 +6,7 @@ import sys
 import time
 from pathlib import Path
 
-sys.path.insert(0, r"C:\youtube_longform_agent")
+sys.path.insert(0, next(str(_p / "youtube_longform_agent") for _p in __import__("pathlib").Path(__file__).resolve().parents if (_p / "youtube_longform_agent").is_dir()))
 from gemini_pool import GeminiPool, is_quota_error
 from google.genai import types
 
@@ -31,7 +31,7 @@ SHEET = (
 
 CHARACTERS = {
     "harin": {
-        "ref": Path(r"C:\PROJECT\images\portraits\daughter.png"),
+        "ref": Path(str([_p for _p in __import__("pathlib").Path(__file__).resolve().parents if (_p / "AGENTS.md").is_file()][-1] / "images/portraits/daughter.png")),
         "desc": (
             "a cheerful 6-year-old Korean girl named Harin, based faithfully on the attached photo: "
             "same face shape, same eyes and warm smile, black hair in two low pigtails tied with fluffy "
@@ -40,7 +40,7 @@ CHARACTERS = {
         ),
     },
     "choco": {
-        "ref": Path(r"C:\PROJECT\family_test\강아지.jpg"),
+        "ref": Path(str([_p for _p in __import__("pathlib").Path(__file__).resolve().parents if (_p / "AGENTS.md").is_file()][-1] / "family_test/강아지.jpg")),
         "desc": (
             "a small deep reddish-brown (chestnut, NOT light tan) toy poodle puppy named Choco, based faithfully on the attached photo: "
             "very curly fluffy chestnut-brown coat, LONG FLOPPY HANGING curly ears in EVERY view and EVERY expression (NEVER pointy or upright ears), round teddy-bear face, round fluffy head, shiny black button eyes, "

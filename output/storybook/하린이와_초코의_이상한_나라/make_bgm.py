@@ -9,11 +9,9 @@ from pathlib import Path
 
 BASE = Path(__file__).parent
 FFMPEG = (
-    r"C:\Users\user\AppData\Local\Microsoft\WinGet\Packages"
-    r"\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe"
-    r"\ffmpeg-8.1.1-full_build\bin\ffmpeg.EXE"
+    "ffmpeg"
 )
-SRC = Path(r"C:\PROJECT\assets\bgm\storybook")
+SRC = Path(str([_p for _p in __import__("pathlib").Path(__file__).resolve().parents if (_p / "AGENTS.md").is_file()][-1] / "assets/bgm/storybook"))
 ORDER = ["b1", "b2"]  # 한 바퀴만
 XFADE = 3.0
 FADE_OUT = 6.0   # b2 끝 페이드아웃 길이 (초)

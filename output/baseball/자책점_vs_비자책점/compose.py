@@ -6,11 +6,9 @@ from make_narration import SCENES  # 나레이션 텍스트 단일 출처
 
 BASE = Path(__file__).parent
 FFMPEG = (
-    r"C:\Users\user\AppData\Local\Microsoft\WinGet\Packages"
-    r"\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe"
-    r"\ffmpeg-8.1.1-full_build\bin\ffmpeg.EXE"
+    "ffmpeg"
 )
-FFPROBE = FFMPEG.replace("ffmpeg.EXE", "ffprobe.EXE")
+FFPROBE = FFMPEG.replace("ffmpeg", "ffprobe")
 W, H, FPS = 1920, 1080, 30
 PAD = 0.8
 AUDIO_DELAY_MS = 400

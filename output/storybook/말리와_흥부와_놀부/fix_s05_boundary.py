@@ -9,9 +9,7 @@ from make_narration import SCENES, norm
 BASE = Path(__file__).parent
 FULL = BASE / "audio" / "narration_full.wav"
 FFMPEG = (
-    r"C:\Users\user\AppData\Local\Microsoft\WinGet\Packages"
-    r"\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe"
-    r"\ffmpeg-8.1.1-full_build\bin\ffmpeg.EXE"
+    "ffmpeg"
 )
 SR, BITS = 24000, 16
 S05_START = 108.85   # whisper 안정 경계 (s04→s05)
