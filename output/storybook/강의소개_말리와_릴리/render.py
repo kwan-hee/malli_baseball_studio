@@ -807,11 +807,15 @@ def S(ctx, sid):  # noqa: C901 — 장면 표
     elif sid in ("S03-07", "S03-09"):
         c.alpha_composite(background("cinema"))
         lang = "한국어" if sid == "S03-07" else "English"
-        paste(c, still_placeholder(lang), 640, 330)
+        paste(c, still_placeholder(lang, W / 900), 640, 360)
         corner(ctx) if sid == "S03-07" else None
     elif sid in ("S03-08", "S03-10"):
         c.alpha_composite(background("cinema"))
         lang = "한국어" if sid == "S03-08" else "English"
+        name = "harin_ko" if sid == "S03-08" else "harin_en"
+        if (CLIPS / f"{name}.mp4").exists():
+            ctx.c = harin_frame(name, int(t * FPS))
+            return
         paste(c, clip_placeholder(lang), 640, 360)
         # 진행 바 (임시 화면이 멈춘 화면처럼 보이지 않게)
         ImageDraw.Draw(c).rounded_rectangle((340, 620, 352 + 588 * t / d, 630), 5, fill=(230, 160, 120))
@@ -1140,18 +1144,32 @@ def frame_sprite(w, h):
     return im
 
 
+# 정지 화면 프레임 시점: 원본 영상에 구운 자막이 없는 틈 (하린 subs.srt / subs_en.srt 기준)
+# — 클립 첫 프레임은 원본 자막("초코야, 기다려!")이 남아 이 영상 자막과 겹침 (2026-10-22 프레임 검수)
+STILL_T = {"한국어": 8.2, "English": 7.5}
+
+
+@lru_cache(None)
+def harin_first_frame(lang):
+    name = "harin_ko" if lang == "한국어" else "harin_en"
+    raw = subprocess.run(["ffmpeg", "-v", "quiet", "-ss", str(STILL_T[lang]), "-i", str(CLIPS / f"{name}.mp4"), "-frames:v", "1",
+                          "-f", "rawvideo", "-pix_fmt", "rgba", "-"], capture_output=True).stdout
+    return Image.frombytes("RGBA", (W, H), raw)
+
+
 @lru_cache(None)
 def still_placeholder(lang, scale=1.0):
+    """완성작(하린) 클립 장면 정지 화면(원본 자막 없는 프레임) + 왼쪽 위 언어 라벨. 클립이 없으면 들판 배경으로 대체."""
     w, h = int(900 * scale), int(506 * scale)
-    pic = ImageOps.fit(load(IMG / "B2.png"), (w, h), Image.LANCZOS).copy()
-    pic = ImageEnhance.Brightness(pic).enhance(0.92)
-    d = ImageDraw.Draw(pic)
-    sub = text_sprite("완성작 첫 장면 자리 (하린이와 초코의 이상한 나라)", int(24 * max(scale, 0.7)), (255, 255, 255), "gothic", 2, (60, 50, 50))
-    pic.alpha_composite(sub, ((w - sub.width) // 2, h - sub.height - 14))
-    lab = card_sprite(int(150 * max(scale, 0.7)), int(54 * max(scale, 0.7)), (255, 255, 255), 16, None, False)
+    if (CLIPS / ("harin_ko.mp4" if lang == "한국어" else "harin_en.mp4")).exists():
+        pic = harin_first_frame(lang).resize((w, h), Image.LANCZOS)
+    else:
+        pic = ImageOps.fit(load(IMG / "B2.png"), (w, h), Image.LANCZOS).copy()
+    k = max(scale, 0.7)
+    lab = card_sprite(int(150 * k), int(54 * k), (255, 255, 255), 16, None, False)
     pic.alpha_composite(lab, (-4, -4))
-    tx = text_sprite(lang, int(30 * max(scale, 0.7)), INK)
-    pic.alpha_composite(tx, (20 + (int(150 * max(scale, 0.7)) - tx.width) // 2, 20 + (int(54 * max(scale, 0.7)) - tx.height) // 2))
+    tx = text_sprite(lang, int(30 * k), INK)
+    pic.alpha_composite(tx, (20 + (int(150 * k) - tx.width) // 2, 20 + (int(54 * k) - tx.height) // 2))
     return pic
 
 
@@ -1367,6 +1385,31 @@ def tag_state(i):
 
 
 _clip_cache = {}
+_harin = {}
+
+
+def harin_frame(name, idx):
+    """하린 클립(20초) 프레임을 순차 디코딩 — 전부 메모리에 올리면 1.8GB 라 스트리밍."""
+    st = _harin.get(name)
+    if st is None or idx < st["idx"] or idx > st["idx"] + 50:
+        if st:
+            st["proc"].kill()
+        proc = subprocess.Popen(["ffmpeg", "-v", "quiet", "-ss", f"{idx / FPS:.3f}", "-i", str(CLIPS / f"{name}.mp4"),
+                                 "-f", "rawvideo", "-pix_fmt", "rgba", "-"], stdout=subprocess.PIPE)
+        st = _harin[name] = {"proc": proc, "idx": idx, "img": None}
+        st["img"] = _read_rgba(proc) or st["img"]
+    while st["idx"] < idx:
+        nxt = _read_rgba(st["proc"])
+        st["idx"] += 1
+        if nxt is not None:
+            st["img"] = nxt
+    return st["img"].copy() if st["img"] else Image.new("RGBA", (W, H), (0, 0, 0, 255))
+
+
+def _read_rgba(proc):
+    buf = proc.stdout.read(W * H * 4)
+    return Image.frombytes("RGBA", (W, H), buf) if len(buf) == W * H * 4 else None
+
 
 
 def clip_frames(name):

@@ -67,6 +67,15 @@ for sid, name, at in SFX:
         t = s["start"] + at
     add(fx, x * SFX_VOLUME, t)
 
+# 완성작 클립 소리 (S03-08 한국어 / S03-10 영어 — 콘티: 🎵 꺼짐 / 클립 소리만)
+for sid, name in (("S03-08", "harin_ko"), ("S03-10", "harin_en")):
+    clip = BASE / "clips" / f"{name}.mp4"
+    if clip.exists():
+        raw = subprocess.run(["ffmpeg", "-v", "quiet", "-i", str(clip), "-vn", "-ac", "1", "-ar", str(SR),
+                              "-f", "f32le", "-"], capture_output=True).stdout
+        x = np.frombuffer(raw, np.float32)[: int(T[sid]["length"] * SR)]
+        add(fx, x, T[sid]["start"])
+
 # BGM: 동화용 b1→b2 반복 이어 붙이기 (3초 크로스페이드)
 bgm_src = []
 for name in ["b1", "b2"]:
