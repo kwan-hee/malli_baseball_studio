@@ -45,6 +45,7 @@ python compose.py           # ffmpeg 최종 조립 → {편명}_final.mp4
 - **자막은 바닥 밀착** MarginV=10 (두 채널 공통)
 - **엔딩에 구독·좋아요 CTA 필수** (동화: 말리 말투 / 야구: 해설자 한 문장)
 - 말리 이미지 프롬프트는 `prompts/malli_character.txt` 에서만 파생, `images/style_ref/malli_reference.png` 를 multimodal 참조로 첨부
+- 릴리 선생 이미지 프롬프트는 `prompts/lily_character.txt` 에서 파생, `images/style_ref/lily.png` 를 multimodal 참조로 첨부 (2026-10-22 확정)
 - 야구사전 삽화에 실존 선수 얼굴 금지 (유니폼 색·상황으로 표현)
 - 영상 플랫폼: 동화 = Google Flow(Veo 3.1) 우선 / 야구 = Higgsfield(Seedance) 우선 — docs/01_COST_POLICY.md
 

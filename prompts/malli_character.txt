@@ -1,35 +1,40 @@
 # 말리 캐릭터 기준 프롬프트 (모든 말리 이미지는 여기서 파생)
-# 출처: 기존 파이프라인(C:\youtube_longform_agent) 검증 프롬프트. 이름만 Mali→Malli 갱신.
+# 2026-10-22 갱신: images/style_ref/malli_reference.png (10/22 수채화 시트) 기준으로 외형·스타일 교체 (사용자 지시)
+#   - 리본: 머리 위 → 분홍 목걸이에 달린 빨간 나비 리본 / 태그 표기: 시트대로 "Malli"
+#   - 스타일: 지브리 셀 애니 + NOT watercolor → 따뜻한 크림 종이 위 수채화·연필 (릴리 시트와 같은 그림체)
+# 이전 버전(지브리 gouache, 머리 리본)은 git 기록 참조. 42편까지의 채널 편은 이전 버전으로 제작됨.
 
 ## 캐릭터 프롬프트 (영문 — 모든 image_prompt 맨 앞에 배치)
 
-a fluffy cream-colored Maltipoo puppy named Malli with a large red bow ribbon on her head,
-pink collar with a gold bone-shaped tag engraved "MALLI", soft curly fur, big dark expressive eyes
+a fluffy cream-colored Maltipoo puppy named Malli with a red bow ribbon on her pink collar,
+a gold bone-shaped tag engraved "Malli" hanging from the collar, soft curly fur, long floppy curly ears,
+big dark expressive eyes, black button nose, fluffy curled tail
 
 ## 스타일 서픽스 (영문 — 모든 image_prompt 맨 뒤에 배치)
 
-hand-drawn 2D animation in the style of a Studio Ghibli / Hayao Miyazaki film,
-lush hand-painted gouache backgrounds, soft natural lighting and gentle warm atmosphere,
-clean confident linework with cel-shaded characters, soft rounded faces and large gentle expressive eyes,
-warm nostalgic pastel color palette, cozy whimsical storybook mood, cinematic anime film look,
-NOT watercolor, NOT 3D render, NOT generic cartoon, do not change character design
+soft hand-drawn watercolor and pencil illustration on warm cream textured paper,
+gentle Japanese animation storybook style, clean delicate linework, pastel palette, soft shadows,
+exactly matching the attached reference sheet's art style, NOT 3D render, NOT generic cartoon,
+do not change character design
 
-## 조립 규칙 (기존 파이프라인 검증 방식)
+## 조립 규칙
 
 image_prompt = [캐릭터 프롬프트] + ", [장면 설명 — 환경, 조명, 감정]" + ", [스타일 서픽스]"
 
 - 이미지 생성 시 images/style_ref/malli_reference.png 를 multimodal 참조로 함께 전달 (일관성 핵심)
 - 표정 변형 허용: smiling / surprised / curious / sleepy
-- 금지: 털 색 변경, 리본 색 변경, 태그 텍스트 변경, 그림체 변경
+- 금지: 털 색 변경, 리본 색·위치 변경, 태그 텍스트 변경, 그림체 변경
+- 귀는 모든 컷에서 길게 늘어진 곱슬 귀 유지 — 놀람·벌떡 포즈에서 치와와처럼 뾰족해지기 쉬움
+  ("her ears stay LONG FLOPPY HANGING curly ears, NEVER pointed or upright" 명시, 2026-10-22 강의 소개 M8 교훈)
 
-## 예시 (실제 사용됐던 장면 프롬프트 패턴)
+## 예시 (강의 소개 영상 2026-10-22 검증 패턴)
 
-a fluffy cream-colored Maltipoo puppy named Malli with a large red bow ribbon on her head,
-pink collar with a gold bone-shaped tag engraved "MALLI", soft curly fur, big dark expressive eyes,
-surrounded by dozens of glowing fireflies in a dark forest, golden sparkles floating around her,
-wonder and amazement in her eyes, magical enchanted night atmosphere,
-hand-drawn 2D animation in the style of a Studio Ghibli / Hayao Miyazaki film,
-lush hand-painted gouache backgrounds, soft natural lighting and gentle warm atmosphere,
-clean confident linework with cel-shaded characters, soft rounded faces and large gentle expressive eyes,
-warm nostalgic pastel color palette, cozy whimsical storybook mood, cinematic anime film look,
-NOT watercolor, NOT 3D render, NOT generic cartoon, do not change character design
+a fluffy cream-colored Maltipoo puppy named Malli with a red bow ribbon on her pink collar,
+a gold bone-shaped tag engraved "Malli" hanging from the collar, soft curly fur, long floppy curly ears,
+big dark expressive eyes, black button nose, fluffy curled tail,
+sitting and hugging a small closed picture book to her chest, eyes sparkling with joy,
+alone on a completely plain flat pure white background, no ground shadow,
+soft hand-drawn watercolor and pencil illustration on warm cream textured paper,
+gentle Japanese animation storybook style, clean delicate linework, pastel palette, soft shadows,
+exactly matching the attached reference sheet's art style, NOT 3D render, NOT generic cartoon,
+do not change character design
