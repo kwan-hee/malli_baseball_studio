@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Whiteboard Transition — Draw / Erase / Draw</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #222; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; font-family: sans-serif; color: #fff; }
+  #stage { background: #f8f8f6; border-radius: 8px; box-shadow: 0 4px 24px rgba(0,0,0,0.3); }
+  #controls { margin-top: 16px; display: flex; gap: 12px; align-items: center; }
+  button { padding: 8px 20px; font-size: 14px; border: none; border-radius: 4px; cursor: pointer; background: #4a90d9; color: #fff; }
+  button:hover { background: #3a7bc8; }
+  #info { margin-top: 8px; font-size: 13px; color: #aaa; }
+</style>
+</head>
+<body>
+
+<svg id="stage" width="1526" height="1017" viewBox="0 0 1526 1017">
+  <rect width="1526" height="1017" fill="#f8f8f6"/>
+
+  <defs>
+    <!-- 화살표 마커 -->
+    <marker id="arrowBlue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2277cc"/>
+    </marker>
+    <!-- 지우개 마스크 -->
+    <mask id="erase_mask">
+      <rect width="1526" height="1017" fill="white"/>
+    </mask>
+  </defs>
+
+  <!-- ============================================================
+       SCENE A: 6-4-3 병살 — 홈(아래) 외야(위) 정방향
+       ============================================================ -->
+  <g id="scene_a" opacity="1">
+    <!-- 1) 외야 아크 (위로 볼록) -->
+    <path data-order="1" d="M 300,250 Q 763,-200 1226,250" fill="none" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+    <!-- 2-3) 파울라인: 홈→좌측, 홈→우측 -->
+    <path data-order="2" d="M 763,750 L 300,250" fill="none" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+    <path data-order="3" d="M 763,750 L 1226,250" fill="none" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+    <!-- 4) 다이아몬드: 홈(아래) → 1루(오) → 2루(위) → 3루(왼) -->
+    <path data-order="4" d="M 763,750 L 963,580 L 763,410 L 563,580 Z" fill="none" stroke="#333" stroke-width="3.5" stroke-linejoin="round"/>
+    <!-- 5) 홈플레이트 -->
+    <path data-order="5" d="M 751,745 L 763,755 L 775,745 L 775,732 L 751,732 Z" fill="none" stroke="#333" stroke-width="2.5"/>
+    <!-- 6) 1루 베이스 -->
+    <path data-order="6" d="M 953,570 L 973,570 L 973,590 L 953,590 Z" fill="none" stroke="#333" stroke-width="2.5"/>
+    <!-- 7) 2루 베이스 -->
+    <path data-order="7" d="M 763,400 L 773,410 L 763,420 L 753,410 Z" fill="none" stroke="#333" stroke-width="2.5"/>
+    <!-- 8) 3루 베이스 -->
+    <path data-order="8" d="M 553,570 L 573,570 L 573,590 L 553,590 Z" fill="none" stroke="#333" stroke-width="2.5"/>
+    <!-- 9) 마운드 -->
+    <path data-order="9" d="M 763,600 m -15,0 a 15,15 0 1,0 30,0 a 15,15 0 1,0 -30,0" fill="none" stroke="#333" stroke-width="2"/>
+
+    <!-- 캐릭터 이미지 (data-order로 그리기 순서, data-img로 이미지 참조) -->
+    <!-- 10) 투수 --> <image data-order="10" data-img="1" href="pos_pitcher.png" x="738" y="555" width="70" height="80" opacity="0"/>
+    <!-- 11) 포수 --> <image data-order="11" data-img="1" href="pos_catcher.png" x="738" y="775" width="70" height="80" opacity="0"/>
+    <!-- 12) 1루수 --> <image data-order="12" data-img="1" href="pos_firstbase.png" x="975" y="545" width="70" height="80" opacity="0"/>
+    <!-- 13) 2루수 --> <image data-order="13" data-img="1" href="pos_secondbase.png" x="845" y="460" width="70" height="80" opacity="0"/>
+    <!-- 14) 3루수 --> <image data-order="14" data-img="1" href="pos_thirdbase.png" x="495" y="545" width="70" height="80" opacity="0"/>
+    <!-- 15) 유격수 --> <image data-order="15" data-img="1" href="pos_shortstop.png" x="625" y="460" width="70" height="80" opacity="0"/>
+    <!-- 16) 좌익수 --> <image data-order="16" data-img="1" href="pos_leftfield.png" x="375" y="325" width="70" height="80" opacity="0"/>
+    <!-- 17) 중견수 --> <image data-order="17" data-img="1" href="pos_centerfield.png" x="738" y="215" width="70" height="80" opacity="0"/>
+    <!-- 18) 우익수 --> <image data-order="18" data-img="1" href="pos_rightfield.png" x="1075" y="325" width="70" height="80" opacity="0"/>
+
+    <!-- 6-4-3 화살표 -->
+    <path data-order="19" d="M 763,740 L 655,490" fill="none" stroke="#2277cc" stroke-width="3" stroke-linecap="round" marker-end="url(#arrowBlue)"/>
+    <path data-order="20" d="M 658,485 L 863,485" fill="none" stroke="#2277cc" stroke-width="3" stroke-linecap="round" stroke-dasharray="8,4" marker-end="url(#arrowBlue)"/>
+    <path data-order="21" d="M 873,480 L 995,570" fill="none" stroke="#2277cc" stroke-width="3" stroke-linecap="round" stroke-dasharray="8,4" marker-end="url(#arrowBlue)"/>
+
+    <!-- 빨간 아웃 표시 -->
+    <path data-order="22" d="M 763,410 m -25,0 a 25,25 0 1,0 50,0 a 25,25 0 1,0 -50,0" fill="none" stroke="#cc3333" stroke-width="3"/>
+    <path data-order="23" d="M 963,580 m -25,0 a 25,25 0 1,0 50,0 a 25,25 0 1,0 -50,0" fill="none" stroke="#cc3333" stroke-width="3"/>
+    <path data-order="24" d="M 753,400 L 773,420 M 773,400 L 753,420" fill="none" stroke="#cc3333" stroke-width="3" stroke-linecap="round"/>
+    <path data-order="25" d="M 953,570 L 973,590 M 973,570 L 953,590" fill="none" stroke="#cc3333" stroke-width="3" stroke-linecap="round"/>
+  </g>
+
+  <!-- ============================================================
+       SCENE B: 4-6-3 병살 (2루수 → 유격수 → 1루수)
+       ============================================================ -->
+  <g id="scene_b" opacity="0">
+    <!-- 필드 구조 동일 — 홈(아래) 외야(위) -->
+    <path data-order="1" d="M 300,250 Q 763,-200 1226,250" fill="none" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+    <path data-order="2" d="M 763,750 L 300,250" fill="none" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+    <path data-order="3" d="M 763,750 L 1226,250" fill="none" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+    <path data-order="4" d="M 763,750 L 963,580 L 763,410 L 563,580 Z" fill="none" stroke="#333" stroke-width="3.5" stroke-linejoin="round"/>
+    <path data-order="5" d="M 751,745 L 763,755 L 775,745 L 775,732 L 751,732 Z" fill="none" stroke="#333" stroke-width="2.5"/>
+    <path data-order="6" d="M 953,570 L 973,570 L 973,590 L 953,590 Z" fill="none" stroke="#333" stroke-width="2.5"/>
+    <path data-order="7" d="M 763,400 L 773,410 L 763,420 L 753,410 Z" fill="none" stroke="#333" stroke-width="2.5"/>
+    <path data-order="8" d="M 553,570 L 573,570 L 573,590 L 553,590 Z" fill="none" stroke="#333" stroke-width="2.5"/>
+    <path data-order="9" d="M 763,600 m -15,0 a 15,15 0 1,0 30,0 a 15,15 0 1,0 -30,0" fill="none" stroke="#333" stroke-width="2"/>
+    <!-- 캐릭터 이미지 (scene_a와 동일) -->
+    <image data-order="10" data-img="1" href="pos_pitcher.png" x="738" y="555" width="70" height="80" opacity="0"/>
+    <image data-order="11" data-img="1" href="pos_catcher.png" x="738" y="775" width="70" height="80" opacity="0"/>
+    <image data-order="12" data-img="1" href="pos_firstbase.png" x="975" y="545" width="70" height="80" opacity="0"/>
+    <image data-order="13" data-img="1" href="pos_secondbase.png" x="845" y="460" width="70" height="80" opacity="0"/>
+    <image data-order="14" data-img="1" href="pos_firstbase.png" x="495" y="545" width="70" height="80" opacity="0"/>
+    <image data-order="15" data-img="1" href="pos_shortstop.png" x="625" y="460" width="70" height="80" opacity="0"/>
+    <image data-order="16" data-img="1" href="pos_leftfield.png" x="375" y="325" width="70" height="80" opacity="0"/>
+    <image data-order="17" data-img="1" href="pos_centerfield.png" x="738" y="215" width="70" height="80" opacity="0"/>
+    <image data-order="18" data-img="1" href="pos_rightfield.png" x="1075" y="325" width="70" height="80" opacity="0"/>
+
+    <!-- 4-6-3 화살표 (홈→2루수→유격수→1루수) -->
+    <path data-order="19" d="M 763,740 L 863,490" fill="none" stroke="#2277cc" stroke-width="3" stroke-linecap="round" marker-end="url(#arrowBlue)"/>
+    <path data-order="20" d="M 866,485 L 658,485" fill="none" stroke="#2277cc" stroke-width="3" stroke-linecap="round" stroke-dasharray="8,4" marker-end="url(#arrowBlue)"/>
+    <path data-order="21" d="M 652,480 L 995,570" fill="none" stroke="#2277cc" stroke-width="3" stroke-linecap="round" stroke-dasharray="8,4" marker-end="url(#arrowBlue)"/>
+    <path data-order="22" d="M 763,410 m -25,0 a 25,25 0 1,0 50,0 a 25,25 0 1,0 -50,0" fill="none" stroke="#cc3333" stroke-width="3"/>
+    <path data-order="23" d="M 963,580 m -25,0 a 25,25 0 1,0 50,0 a 25,25 0 1,0 -50,0" fill="none" stroke="#cc3333" stroke-width="3"/>
+    <path data-order="24" d="M 753,400 L 773,420 M 773,400 L 753,420" fill="none" stroke="#cc3333" stroke-width="3" stroke-linecap="round"/>
+    <path data-order="25" d="M 953,570 L 973,590 M 973,570 L 953,590" fill="none" stroke="#cc3333" stroke-width="3" stroke-linecap="round"/>
+  </g>
+
+  <!-- 지우개 잔상(smudge) 레이어 -->
+  <g id="smudge_layer" opacity="0"></g>
+
+  <!-- ============================================================
+       손 = 실제 PNG 이미지 (배경 제거 완료, RGBA)
+       ============================================================ -->
+
+  <!-- 매직펜 (hand_marker.png: 600x600, 대각선 배치, 펜촉 = 왼쪽 아래) -->
+  <g id="hand_marker" transform="translate(-400,-400)" style="pointer-events:none">
+    <image href="hand_marker.png" width="180" height="180" x="0" y="0"/>
+  </g>
+
+  <!-- 지우개 든 손 (hand_eraser.png: 1024x1365, 손이 아래에서 지우개 잡음) -->
+  <g id="hand_eraser" transform="translate(-400,-400)" style="pointer-events:none">
+    <image href="hand_eraser.png" width="180" height="240" x="0" y="0"/>
+  </g>
+
+  <!-- 디버그 점 -->
+  <circle id="debug_dot" r="6" fill="red" cx="-20" cy="-20" style="display:none"/>
+</svg>
+
+<div id="controls">
+  <button onclick="runDrawA()">1. Draw A</button>
+  <button onclick="runEraseA()">2. Erase A</button>
+  <button onclick="runDrawB()">3. Draw B</button>
+  <button onclick="runFull()">▶ Full</button>
+  <button onclick="resetAll()">↺ Reset</button>
+  <label style="display:flex;align-items:center;gap:4px;cursor:pointer">
+    <input type="checkbox" id="debugToggle" onchange="toggleDebug()"> Debug
+  </label>
+  <select id="eraseModeSelect" onchange="CONFIG.ERASE_MODE=this.value">
+    <option value="B">Erase: Mask Wipe (B)</option>
+    <option value="A">Erase: Dashoffset (A)</option>
+  </select>
+</div>
+<div id="info">Phase: <span id="phase">idle</span> | <span id="prog">0%</span></div>
+
+<script>
+// ============================================================
+// CONFIG
+// ============================================================
+const CONFIG = {
+  ERASE_DURATION_SEC: 2.5,
+  DRAW_DURATION_SEC:  3.5,
+  HAND_IN_OUT_SEC:    0.4,
+  ERASE_MODE: 'B',
+  SMUDGE: true,
+  DEBUG: false,
+  FPS: 30,
+  W: 1526,
+  H: 1017,
+};
+
+// 손 이미지 끝점 오프셋 (그룹 로컬 좌표 기준)
+// 마커: 펜촉이 왼쪽 아래 (이미지 180x180 기준)
+const MARKER_TIP = { dx: 15, dy: 165 };
+// 지우개: 지우개 바닥 중앙 (이미지 180x240 기준)
+const ERASER_TIP = { dx: 90, dy: 65 };
+
+// ============================================================
+// UTILS
+// ============================================================
+function easeInOut(t) { return t < 0.5 ? 2*t*t : -1+(4-2*t)*t; }
+function lerp(a, b, t) { return a + (b - a) * t; }
+
+function collectPaths(groupEl) {
+  const items = [];
+  groupEl.querySelectorAll('[data-order]').forEach(el => {
+    const order = parseInt(el.getAttribute('data-order'));
+    const isImg = (el.tagName === 'image');
+    if (el.tagName === 'g') {
+      el.querySelectorAll('path').forEach(p => items.push({ el: p, order, isImg: false }));
+    } else {
+      items.push({ el, order, isImg });
+    }
+  });
+  items.sort((a, b) => a.order - b.order);
+  return items;
+}
+
+function initPath(p) {
+  if (p.tagName === 'image') { p.setAttribute('opacity', '0'); p._totalLen = 50; return; }
+  const len = p.getTotalLength();
+  p.style.strokeDasharray = len;
+  p.style.strokeDashoffset = len;
+  p._totalLen = len;
+}
+function showPath(p) {
+  if (p.tagName === 'image') { p.setAttribute('opacity', '1'); return; }
+  const len = p._totalLen || p.getTotalLength();
+  p.style.strokeDasharray = len;
+  p.style.strokeDashoffset = 0;
+}
+function hidePath(p) {
+  if (p.tagName === 'image') { p.setAttribute('opacity', '0'); return; }
+  const len = p._totalLen || p.getTotalLength();
+  p.style.strokeDasharray = len;
+  p.style.strokeDashoffset = len;
+}
+
+// ============================================================
+// 손 이동 — SVG <g> transform 방식
+// ============================================================
+const handMarker = document.getElementById('hand_marker');
+const handEraser = document.getElementById('hand_eraser');
+const debugDot   = document.getElementById('debug_dot');
+const phaseEl    = document.getElementById('phase');
+const progEl     = document.getElementById('prog');
+
+function setPhase(s) { phaseEl.textContent = s; }
+function setProg(v) { progEl.textContent = Math.round(v*100) + '%'; }
+
+/** SVG <g> 를 tip 끝이 (x,y)에 오도록 translate */
+function moveHand(handEl, tipOff, x, y) {
+  handEl.setAttribute('transform', `translate(${x - tipOff.dx}, ${y - tipOff.dy})`);
+  if (CONFIG.DEBUG) {
+    debugDot.setAttribute('cx', x);
+    debugDot.setAttribute('cy', y);
+  }
+}
+
+function hideHand(handEl) {
+  handEl.setAttribute('transform', 'translate(-400,-400)');
+}
+
+function handSlideIn(handEl, tipOff, tgt) {
+  return new Promise(resolve => {
+    const sx = CONFIG.W + 80, sy = tgt.y;
+    const dur = CONFIG.HAND_IN_OUT_SEC * 1000;
+    const t0 = performance.now();
+    (function tick(now) {
+      const p = Math.min(1, (now - t0) / dur);
+      const e = easeInOut(p);
+      moveHand(handEl, tipOff, lerp(sx, tgt.x, e), lerp(sy, tgt.y, e));
+      p < 1 ? requestAnimationFrame(tick) : resolve();
+    })(performance.now());
+  });
+}
+
+function handSlideOut(handEl, tipOff) {
+  return new Promise(resolve => {
+    // 현재 위치 추출
+    const tf = handEl.getAttribute('transform') || '';
+    const m = tf.match(/translate\(([-\d.]+),\s*([-\d.]+)\)/);
+    const cx = m ? parseFloat(m[1]) + tipOff.dx : 0;
+    const cy = m ? parseFloat(m[2]) + tipOff.dy : 0;
+    const ex = CONFIG.W + 80;
+    const dur = CONFIG.HAND_IN_OUT_SEC * 1000;
+    const t0 = performance.now();
+    (function tick(now) {
+      const p = Math.min(1, (now - t0) / dur);
+      moveHand(handEl, tipOff, lerp(cx, ex, easeInOut(p)), cy);
+      if (p < 1) requestAnimationFrame(tick);
+      else { hideHand(handEl); resolve(); }
+    })(performance.now());
+  });
+}
+
+// ============================================================
+// 그리기
+// ============================================================
+function drawSinglePath(pathEl, ms, isImg) {
+  if (isImg) {
+    // 이미지: 마커를 이미지 중앙으로 이동 후 페이드인
+    return new Promise(resolve => {
+      const ix = parseFloat(pathEl.getAttribute('x'));
+      const iy = parseFloat(pathEl.getAttribute('y'));
+      const iw = parseFloat(pathEl.getAttribute('width'));
+      const ih = parseFloat(pathEl.getAttribute('height'));
+      const cx = ix + iw/2, cy = iy + ih/2;
+      moveHand(handMarker, MARKER_TIP, cx, cy);
+      const t0 = performance.now();
+      (function tick(now) {
+        const p = Math.min(1, (now - t0) / ms);
+        pathEl.setAttribute('opacity', p);
+        setProg(p);
+        p < 1 ? requestAnimationFrame(tick) : resolve();
+      })(performance.now());
+    });
+  }
+  return new Promise(resolve => {
+    const len = pathEl._totalLen;
+    const t0 = performance.now();
+    (function tick(now) {
+      const p = Math.min(1, (now - t0) / ms);
+      pathEl.style.strokeDashoffset = len * (1 - p);
+      const pt = pathEl.getPointAtLength(p * len);
+      moveHand(handMarker, MARKER_TIP, pt.x, pt.y);
+      setProg(p);
+      p < 1 ? requestAnimationFrame(tick) : resolve();
+    })(performance.now());
+  });
+}
+
+async function drawScene(sceneId) {
+  const g = document.getElementById(sceneId);
+  g.setAttribute('opacity', '1');
+  g.removeAttribute('mask');
+  const items = collectPaths(g);
+  items.forEach(it => initPath(it.el));
+
+  const totalLen = items.reduce((s, it) => s + it.el._totalLen, 0);
+  const totalMs = CONFIG.DRAW_DURATION_SEC * 1000;
+
+  const firstPt = items[0].el.getPointAtLength(0);
+  await handSlideIn(handMarker, MARKER_TIP, firstPt);
+
+  setPhase('draw ' + sceneId);
+  for (const item of items) {
+    const ms = Math.max(60, (item.el._totalLen / totalLen) * totalMs);
+    await drawSinglePath(item.el, ms, item.isImg);
+  }
+  await handSlideOut(handMarker, MARKER_TIP);
+  setPhase('idle');
+}
+
+// ============================================================
+// 지우기
+// ============================================================
+
+// 방식 A: dashoffset 되감기
+async function eraseMode_A(sceneId) {
+  const g = document.getElementById(sceneId);
+  const items = collectPaths(g);
+  items.sort((a, b) => a.el.getPointAtLength(0).x - b.el.getPointAtLength(0).x);
+
+  const totalLen = items.reduce((s, it) => s + it.el._totalLen, 0);
+  const totalMs = CONFIG.ERASE_DURATION_SEC * 1000;
+
+  const firstPt = items[0].el.getPointAtLength(0);
+  await handSlideIn(handEraser, ERASER_TIP, firstPt);
+  setPhase('erase ' + sceneId + ' (A)');
+
+  for (const item of items) {
+    const ms = Math.max(40, (item.el._totalLen / totalLen) * totalMs);
+    await new Promise(resolve => {
+      const len = item.el._totalLen;
+      const t0 = performance.now();
+      (function tick(now) {
+        const p = Math.min(1, (now - t0) / ms);
+        item.el.style.strokeDashoffset = len * p;
+        const pt = item.el.getPointAtLength((1 - p) * len);
+        moveHand(handEraser, ERASER_TIP, pt.x, pt.y);
+        setProg(p);
+        p < 1 ? requestAnimationFrame(tick) : resolve();
+      })(performance.now());
+    });
+  }
+  await handSlideOut(handEraser, ERASER_TIP);
+  g.setAttribute('opacity', '0');
+  setPhase('idle');
+}
+
+// 방식 B: mask wipe — 지우개가 좌우 왕복하며 아래로
+async function eraseMode_B(sceneId) {
+  const g = document.getElementById(sceneId);
+  const maskEl = document.getElementById('erase_mask');
+  maskEl.innerHTML = '<rect width="1526" height="1017" fill="white"/>';
+  g.setAttribute('mask', 'url(#erase_mask)');
+
+  const totalMs = CONFIG.ERASE_DURATION_SEC * 1000;
+  const brushH = 130, brushW = 280;
+  const rows = Math.ceil(CONFIG.H / brushH);
+
+  await handSlideIn(handEraser, ERASER_TIP, { x: 0, y: brushH / 2 });
+  setPhase('erase ' + sceneId + ' (B)');
+
+  const t0 = performance.now();
+  await new Promise(resolve => {
+    (function tick(now) {
+      const elapsed = now - t0;
+      const p = Math.min(1, elapsed / totalMs);
+      const row = Math.min(rows - 1, Math.floor(p * rows));
+      const rowP = (p * rows) - row;
+      const goRight = (row % 2 === 0);
+
+      const y = row * brushH + brushH / 2;
+      const x = goRight ? lerp(0, CONFIG.W, easeInOut(rowP)) : lerp(CONFIG.W, 0, easeInOut(rowP));
+
+      moveHand(handEraser, ERASER_TIP, x, y);
+      setProg(p);
+
+      // 마스크에 검은 rect 추가 (지워짐)
+      const r = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      r.setAttribute('x', x - brushW/2);
+      r.setAttribute('y', y - brushH/2);
+      r.setAttribute('width', brushW);
+      r.setAttribute('height', brushH);
+      r.setAttribute('fill', 'black');
+      maskEl.appendChild(r);
+
+      if (CONFIG.SMUDGE && Math.random() < 0.03) addSmudge(x, y);
+
+      if (p < 1) requestAnimationFrame(tick);
+      else {
+        const full = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        full.setAttribute('x',0); full.setAttribute('y',0);
+        full.setAttribute('width', CONFIG.W); full.setAttribute('height', CONFIG.H);
+        full.setAttribute('fill','black');
+        maskEl.appendChild(full);
+        resolve();
+      }
+    })(performance.now());
+  });
+
+  await handSlideOut(handEraser, ERASER_TIP);
+  g.setAttribute('opacity', '0');
+  g.removeAttribute('mask');
+  if (CONFIG.SMUDGE) fadeSmudge();
+  setPhase('idle');
+}
+
+function addSmudge(x, y) {
+  const layer = document.getElementById('smudge_layer');
+  layer.setAttribute('opacity', '1');
+  const r = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+  r.setAttribute('x', x - 30 + Math.random()*20);
+  r.setAttribute('y', y - 15 + Math.random()*10);
+  r.setAttribute('width', 40 + Math.random()*30);
+  r.setAttribute('height', 8 + Math.random()*6);
+  r.setAttribute('fill', '#e8e8e5');
+  r.setAttribute('rx', '3');
+  layer.appendChild(r);
+}
+
+function fadeSmudge() {
+  const layer = document.getElementById('smudge_layer');
+  let op = 1;
+  (function tick() {
+    op -= 0.02;
+    if (op <= 0) { layer.setAttribute('opacity','0'); layer.innerHTML = ''; return; }
+    layer.setAttribute('opacity', op);
+    requestAnimationFrame(tick);
+  })();
+}
+
+async function eraseScene(id) {
+  if (CONFIG.ERASE_MODE === 'A') await eraseMode_A(id);
+  else await eraseMode_B(id);
+}
+
+// ============================================================
+// 컨트롤
+// ============================================================
+function toggleDebug() {
+  CONFIG.DEBUG = document.getElementById('debugToggle').checked;
+  debugDot.style.display = CONFIG.DEBUG ? 'block' : 'none';
+}
+
+function resetAll() {
+  ['scene_a','scene_b'].forEach(id => {
+    const g = document.getElementById(id);
+    g.setAttribute('opacity','0');
+    g.removeAttribute('mask');
+    collectPaths(g).forEach(it => hidePath(it.el));
+  });
+  hideHand(handMarker);
+  hideHand(handEraser);
+  document.getElementById('smudge_layer').innerHTML = '';
+  document.getElementById('erase_mask').innerHTML = '<rect width="1526" height="1017" fill="white"/>';
+  setPhase('idle'); setProg(0);
+}
+
+async function runDrawA() { resetAll(); await drawScene('scene_a'); }
+async function runEraseA() {
+  const g = document.getElementById('scene_a');
+  g.setAttribute('opacity','1');
+  collectPaths(g).forEach(it => showPath(it.el));
+  await eraseScene('scene_a');
+}
+async function runDrawB() {
+  document.getElementById('scene_a').setAttribute('opacity','0');
+  await drawScene('scene_b');
+}
+async function runFull() {
+  resetAll();
+  await drawScene('scene_a');
+  await new Promise(r => setTimeout(r, 800));
+  await eraseScene('scene_a');
+  await new Promise(r => setTimeout(r, 300));
+  await drawScene('scene_b');
+}
+
+resetAll();
+</script>
+</body>
+</html>
