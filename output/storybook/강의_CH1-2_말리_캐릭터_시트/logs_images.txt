@@ -1,0 +1,11 @@
+gemini_pool: 2개 키 로드, 활성=#1
+J01: 814,241 bytes (gemini-3-pro-image-preview)
+J02: 734,059 bytes (gemini-3-pro-image-preview)
+J03: 763,802 bytes (gemini-3-pro-image-preview)
+J04: 783,005 bytes (gemini-3-pro-image-preview)
+J05: 627,906 bytes (gemini-3-pro-image-preview)
+W01: 755,069 bytes (gemini-3-pro-image-preview)
+W02: 812,439 bytes (gemini-3-pro-image-preview)
+V1: 764,736 bytes (gemini-3-pro-image-preview)
+V2: v2_fix.txt 없음 → V1 검수 후 작성하고 다시 실행
+ALL DONE

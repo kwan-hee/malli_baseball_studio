@@ -1,0 +1,10 @@
+/Volumes/맥 매니 HDD/말리동화(교육용)/output/storybook/강의소개_말리와_릴리/gen_clips_veo.py:66: DeprecationWarning: The generate_videos method with prompt/image/video arguments is deprecated and will be removed in a future major release (not before 2026-07-31). Please use the source argument instead.
+  op = client.models.generate_videos(
+gemini_pool: 2개 키 로드, 활성=#1
+open: [CLIP] model=veo-3.1-fast-generate-preview est_credits~20 (추정치, 실제는 Flow 대시보드 확인)
+open: veo operation issued (id=models/veo-3.1-fast-generate-preview/operations/76zcq9cpldr8) — polling (작업 ID 발급됨)
+open: 1,935,315 bytes (veo-3.1-fast-generate-preview, 63s)
+close: [CLIP] model=veo-3.1-fast-generate-preview est_credits~20 (추정치, 실제는 Flow 대시보드 확인)
+close: veo operation issued (id=models/veo-3.1-fast-generate-preview/operations/rufvcc71wj22) — polling (작업 ID 발급됨)
+close: 2,761,844 bytes (veo-3.1-fast-generate-preview, 63s)
+CLIPS DONE

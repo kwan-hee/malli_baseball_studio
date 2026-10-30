@@ -1,0 +1,2 @@
+the picture is only a small vignette in the middle with a wide empty paper border around it. Extend the same scene so it fills the whole frame edge to edge, with no empty border
+the picture is only a small vignette in the middle with a wide empty paper border around it. Extend the same scene so it fills the whole frame edge to edge, with no empty border. When extending, only continue the sky, grass, fence and flowers; do NOT add any new objects: still exactly ONE red mailbox, ONE round tree and ONE cottage

@@ -1,0 +1,22 @@
+  지금 계신 malli-studio 폴더에서 이런 일들을 도와드릴 수 있어요.                                             
+                                                                                                              
+  - 코드 작업: 코드를 작성하고 고치거나 디버깅하고, 리뷰도 해드려요.                                          
+  - 파일과 터미널 작업: 파일을 읽고 수정하거나 명령어를 실행해요.                                             
+  - 콘텐츠 제작: 이 프로젝트에는 콘텐츠 자동 생산 하네스가 설정돼 있어요. 주제 하나만 알려주시면 조사, 작성,  
+    검수 순서로 완성된 콘텐츠를 만들어 드려요.                                                                
+  - 연결된 서비스 활용: Notion, Google Drive, Gmail, Canva 같은 서비스와 웹 검색도 쓸 수 있어요.              
+                                                                                                              
+  무엇을 도와드릴까요? 😊                                                                                     
+                                                                                                              
+✻ Cogitated for 4s · done 10:16 PM                                                                            
+                                                                                                              
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────
+❯ /exit                                                                                                       
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────
+  ⚠ Transcript saving is off — inherited CLAUDE_CODE_CHILD_SESSION marker · restart with CLAUDE_CODE_FORCE_…  
+  ❯ /exit                                       Exit the CLI                                                  
+    /context                                    Visualize current context usage as a colored grid             
+    /claude.ai Higgsfield:reset-credits (MCP)   Open the Credit Reset offer. Does not claim credits or        
+                                                change the subscription.                                      
+    /usage-credits                              Configure usage credits or request them from your admin when  
+                                                you hit a limit

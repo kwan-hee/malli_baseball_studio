@@ -1,0 +1,25 @@
+gemini_pool: 2개 키 로드, 활성=#1
+N01: 754,975 bytes (gemini-3-pro-image-preview)
+N02: 781,344 bytes (gemini-3-pro-image-preview)
+N03: 777,758 bytes (gemini-3-pro-image-preview)
+N04: 745,014 bytes (gemini-3-pro-image-preview)
+W01a: 444,580 bytes (gemini-3-pro-image-preview)
+W01b: 334,729 bytes (gemini-3-pro-image-preview)
+W01c: 655,413 bytes (gemini-3-pro-image-preview)
+T01: 814,003 bytes (gemini-3-pro-image-preview)
+T02: 826,926 bytes (gemini-3-pro-image-preview)
+V1: 714,418 bytes (gemini-3-pro-image-preview)
+ALL DONE
+gemini_pool: 2개 키 로드, 활성=#1
+N03: 744,652 bytes (gemini-3-pro-image-preview)
+V2: 820,630 bytes (gemini-3-pro-image-preview)
+ALL DONE
+gemini_pool: 2개 키 로드, 활성=#1
+V2: 801,195 bytes (gemini-3-pro-image-preview)
+ALL DONE
+gemini_pool: 2개 키 로드, 활성=#1
+M09: 701,224 bytes (gemini-3-pro-image-preview)
+M10: 698,420 bytes (gemini-3-pro-image-preview)
+D01: 896,765 bytes (gemini-3-pro-image-preview)
+D02: 869,906 bytes (gemini-3-pro-image-preview)
+ALL DONE

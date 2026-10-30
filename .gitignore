@@ -32,3 +32,11 @@ youtube_longform_agent/
 fonts/
 .DS_Store
 ._*
+
+# 2026-10-30: 개인 사진·도구 로컬 파일 (공개 리포)
+family_test/
+수업/KakaoTalk_*.png
+.claude/
+**/.claude/
+.ua/
+**/.ua/

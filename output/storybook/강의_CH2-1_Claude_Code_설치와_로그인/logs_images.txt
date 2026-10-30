@@ -1,0 +1,9 @@
+gemini_pool: 2개 키 로드, 활성=#1
+P01: 745,424 bytes (gemini-3-pro-image-preview)
+P02: 751,064 bytes (gemini-3-pro-image-preview)
+P03: 722,450 bytes (gemini-3-pro-image-preview)
+P04: 755,359 bytes (gemini-3-pro-image-preview)
+ALL DONE
+gemini_pool: 2개 키 로드, 활성=#1
+P03: 727,471 bytes (gemini-3-pro-image-preview)
+ALL DONE

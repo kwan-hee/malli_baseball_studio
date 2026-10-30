@@ -1,0 +1,38 @@
+{
+  "C22": {
+    "res": "480p",
+    "credits": 5,
+    "via": "windows-chrome",
+    "status": "downloaded",
+    "account": "streamingruler1405",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3GOIEhPm9nkLf1DLiWzSNmbyhGD/hf_20261030_022333_e8f1cb37-799e-46d0-a99a-de2c84ad8a5d.mp4",
+    "model": "wan3_0"
+  },
+  "C23": {
+    "res": "480p",
+    "credits": 5,
+    "via": "windows-chrome",
+    "status": "downloaded",
+    "account": "streamingruler1405",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3GOIEhPm9nkLf1DLiWzSNmbyhGD/hf_20261030_022401_15014f7e-eadb-402d-9860-bcb7e979d98e.mp4",
+    "model": "wan3_0"
+  },
+  "C21": {
+    "res": "480p",
+    "credits": 5,
+    "via": "windows-chrome",
+    "status": "downloaded",
+    "account": "streamingruler1405",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3GOIEhPm9nkLf1DLiWzSNmbyhGD/hf_20261030_022249_8a7913a9-6a12-4375-a948-eb10a526e6ec.mp4",
+    "model": "wan3_0"
+  },
+  "C20": {
+    "res": "480p",
+    "credits": 5,
+    "via": "windows-chrome",
+    "status": "downloaded",
+    "account": "streamingruler1405",
+    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3GOIEhPm9nkLf1DLiWzSNmbyhGD/hf_20261030_022201_f4c5064a-c45d-4aec-8c83-a201123d19cd.mp4",
+    "model": "wan3_0"
+  }
+}
