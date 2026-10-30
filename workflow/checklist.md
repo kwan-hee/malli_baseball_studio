@@ -100,6 +100,20 @@
 - [x] 강의 소개 영상 하린 완성작 클립 교체 (2026-10-22: 한국어 28.4s·영어 29.0s 부터 20초 = 2장면 굴 속 낙하, 클립 소리 포함, 정지 화면은 원본 자막 없는 프레임)
 - [ ] 강의 소개 영상 임시 화면 교체: 조이님 사진, 유튜브·블로그 캡처 (자료 받으면 render.py 교체 후 재렌더)
 - [ ] 강의 소개 영상 Obsidian 50_Outputs 저장 (맥에서 볼트 경로 확인 필요)
+- [x] 강의 CH1-1 「5~7세 영상 규칙」 테스트본 (2026-10-29) — ✅_final.mp4 8:16, 릴리·말리 2인, 규칙 8개, 그림 28장, TTS 화자별 1회, 경계 11곳 보정. output/storybook/강의_CH1-1_유아_영상_규칙/
+- [ ] 강의 CH1-1 Kling 3.0 클립 15개 (맥 미니, MAC_CLIPS.md — 시험 실행 비용 보고 후 제출) → compose.py 재실행
+- [x] 강의 CH1-2 「말리 캐릭터 시트 만들기」 테스트본 (2026-10-29) — 동작 보강(클립 19개 배정·loop 재생·말하는 사람 작은 화면·이름표) + 목소리 화자별 지시 분리. output/storybook/강의_CH1-2_말리_캐릭터_시트/
+- [~] (건너뜀 — 바로 Kling 정식으로) 강의 CH1-2 Wan 3.0 테스트 클립 19개 (테스트본 10:16 조립 완료, 클립 자리 임시) (맥 미니, MAC_CLIPS.md — `--test` 시험 실행 비용 보고 후 제출) → compose.py 재실행
+- [x] 강의 CH1-2 정식 제작 여부 → Kling 3.0 · 720p · 5초 · 소리 켬 확정 (2026-10-29)
+- [x] (2026-10-29 완료: 166.25cr, 맥 ffmpeg-full 조립 616.1s, 프레임 검증) 강의 CH1-2 Kling 3.0 정식 클립 19개 (맥 미니, MAC_CLIPS.md 하단 "정식 버전" — Wan 클립 clips_wan_test/ 로 옮기기 → 시험 실행 cost·잔액 보고·승인 → 제출) → compose.py 재실행 → 프레임 검증
+- [x] 강의 CH1-3 「그림체 기준 정하기」 테스트본 (2026-10-30) — `강의_CH1-3_그림체_기준_그림_final.mp4` 7:44, -16.6 LUFS, 프레임 검증. 그림체 기준 10개(그림체_기준안.md) + 티키타카(무서운 호랑이·O/X·탐정·진짜 말리 찾기). CH1-2 Kling 클립 13개 재사용으로 이미 움직임. output/storybook/강의_CH1-3_그림체_기준_그림/
+- [ ] 강의 CH1-3 새 클립 C20~C25 6개 (맥, MAC_CLIPS.md — `--test` 시험 실행 cost 보고 → 제출 → 정식 `--final`) → compose.py 재실행 → Obsidian 50_Outputs
+- [ ] 강의 CH2-1 「Claude Code 설치와 로그인」 — 테스트본 완성(8:57, 클립 C20~C23 임시 그림, 2026-10-30 프레임 검증·T11a 요금제 안내 칩 추가). ★10-30 전체 Wan 전환: 재사용 Kling 12개 clips_kling 으로 이동 → CH1-2 Wan 정식 후 복사. 남은 일: 맥 Wan 테스트 클립 4개(MAC_CLIPS.md) → 정식 여부 결정 → compose 재실행 → Obsidian 50_Outputs
+- [ ] 강의 CH2-2 「Python · FFmpeg · Git 설치」 — Wan 테스트본 완성(2026-10-30, 9:39, -16.5 LUFS, 새 클립 C30~C32 15크레딧 + 재사용 14개). 남은 일: 테스트본 확인 → 정식(--final 720p) 여부 결정 → Mac 요약 카드 맥 실측 보완 → 유튜브 설명란에 설치 명령 3줄 → Obsidian 50_Outputs
 - [ ] 아이패드 실기 확인 (Apple Books EPUB 음성 버튼, Safari 단일 HTML) — 사용자
 - [ ] epubcheck 정식 검증 (Java 설치 필요 — 미실행, 구조 검사만 통과)
 - [ ] 강의 수강생용 실습 도구·교재 (별도 프로젝트로 분리됨)
+- [x] Higgsfield 계정 기기별 분리 (2026-10-30 확정) — Windows = higgsfield.study(워크스페이스 이름 streamingruler1405, 4,283.43cr) / 맥 = yookwanhee6 · 9341 · hfmalli(`whoami` ok:true, 3,402.06cr). 9338 공유안 폐기
+- [ ] 클립 전체 Wan 3.0 전환 (2026-10-30) — CH1-2 Kling 19개 clips_kling 보관, 맥에서 Wan test → final 19개 → CH1-2·CH1-3·CH2-1 재조립
+- [x] 2026-10-30 맥 Orca 붙여 넣기용 Wan 전환 지시문 작성 → workflow/mac_wan_전환_지시문.md (hfmalli 정비 → --test 시험 실행 보고 → 승인 후 제출 → 정식은 별도 지시)
+- [x] 2026-10-30 Wan 3.0 테스트 클립 23개(480p, 115크레딧, @streamingruler1405) → CH1-2(616.1s)·CH1-3(464.2s)·CH2-1(537.7s) 재조립, 프레임 확인 완료. 예전 Kling 본은 *_final_kling.mp4. 남은 일: 사용자 테스트본 확인 → 정식 720p(23×9=207크레딧) 여부
