@@ -1050,3 +1050,187 @@
 
 ## 2026-10-22 — 강의 역할 확정: 릴리 = 강사, 말리 = 강아지 보조
 - 말리 선생 캐릭터 시트(안경+지시봉)를 1장 생성했으나 **[확정] 사용자: "말리는 그냥 강아지로 만들어. 말리는 보조고 가르치는 사람은 릴리야"** → 시트·프롬프트·생성 스크립트 삭제. 강의 영상의 말리는 기준 시트(malli_reference.png) 그대로, 선생님 소품 없이. CLAUDE.md 아키텍처 주의점에 반영.
+
+## 2026-10-28 — 말리 동화 순서도 3종 PDF
+- 사용자 요청: "1,2,3번 다 만들어줘 pdf로" (지난 세션의 순서도 요청은 기록이 없어 이번에 새로 제작).
+- 산출물: `수업/순서도/말리동화_순서도.pdf` (A4 가로 3쪽) + `슬라이드_7단계_흐름도.png` (1920×1080, 영상 삽입용). 생성 스크립트 `make_flowcharts.py` (HTML → Chrome 헤드리스 print-to-pdf/screenshot). 수정은 스크립트의 데이터만 고치고 재실행.
+  1. 제작 파이프라인: CLAUDE.md 2단계 게이트·배정 규칙·compose·프레임 검증·부분 재생성 루프·기록.
+  2. 커리큘럼: `수업/말리동화_커리큘럼.html`(12챕터·40강, 제작 예정 버전) 기준 뱀 모양 흐름. 강의 제목은 지면에 맞게 축약.
+  3. 슬라이드: 강의대본_챕터3.md [03:30–05:00] 화면 지시. 움직이는 장면은 "가장 비싸요"에 맞춰 동전 3개(Claude 해석). 아래 12%는 자막 자리.
+- **발견: 커리큘럼 버전 불일치** — 커리큘럼 html 의 CHAPTER 3 = "소재 고르기"인데 `수업/챕터3_규칙서와_시험실행/` 강의 대본은 "규칙서와 시험 실행". 또 html 의 CH1 강의 설명(리본 머리 위·지브리풍)은 10-22 확정(리본=목걸이·수채화)과 다름. 커리큘럼 확정 시 정리 필요.
+- **[확정] 사용자 (2026-10-28): 커리큘럼 기준 = `수업/말리동화_커리큘럼.html` (12챕터·40강)**. 기존 강의 자료 — CH1 「시작하기 전에」(output/storybook/강의_챕터1_시작하기_전에/, 10-20) · CH3 「규칙서와 첫 시험 실행」(수업/챕터3_규칙서와_시험실행/, 10-21) — 는 **이전 커리큘럼 구성**. 삭제·이동하지 않고 보관하며, html 챕터 구성에 맞춰 재배치·이름 변경할지는 해당 챕터 제작 때 사용자 확인. 순서도 PDF 2쪽 주석도 이 내용으로 갱신.
+- html CH1 강의 설명(1-2 캐릭터 시트·1-3 그림체)을 malli_character.txt 10-22 확정본(리본=분홍 목걸이, "Malli" 태그, 늘어진 곱슬 귀, 크림 종이 수채화·연필)으로 수정.
+
+## 2026-10-28 — 강의 CH1 「채널 설계」 (1-1·1-2·1-3, 합계 29분) 착수
+- 사용자 요청: 릴리(강사)·말리(분위기 담당) 2인 진행, **릴리 행동 많이·친절한 선생님 연출**(강의 소개 영상은 행동이 적었다는 피드백). 1-1 「5~7세 영상 규칙」부터 테스트 1편, **Kling 3.0 · 480p · 소리 켬**. 확인 후 나머지는 알아서 진행.
+- 1-2 = 현재 말리 시트를 Gemini로 만드는 법, 1-3 = 그림체가 잔인해지지 않는 자체 기준.
+- 1차 게이트 자료: `output/storybook/강의_CH1-1_유아_영상_규칙/gate1_outline.md` (규칙 8개 초안 + 6파트 흐름). 승인 대기.
+- 주의: hfmalli 는 맥 미니에만 있음(이 Windows PC 에 없음).
+- **1차 게이트 확정 (2026-10-28)**: 길이 9분(커리큘럼대로) / Kling 소리 = 효과음·현장음만, 목소리는 Gemini TTS(릴리 Leda·말리 Kore 화자별 1회) / 안전 규칙 7번(따라 하면 위험한 행동) 포함 → 규칙 8개.
+- 대본·콘티: `STORYBOARD_CH1-1.md` 51장면 7파트, 릴리 1,962자·말리 257자, 예상 8:10~8:40. 2차 게이트 자료 `gate2_plan.md`: Kling 후보 15개(A안) / 규칙 기반 8개(B안), 이미지 28장. 승인 대기.
+- **[제작 기록] 2차 게이트 A안(Kling 15개)·맥에서 클립 생성 승인 (2026-10-29)** → Windows PC 에서 그림·TTS·조립 진행.
+  - 이미지 28장(gemini-3-pro-image-preview, 재시도 0) + 샘플 2장 재생성(책 표지 가짜 글자 "Picture's Book" → 프롬프트에 "책 표지·책등 글자 금지" 추가, _rejected/ 보관). I10·I16·I18 책꽂이에 아주 작은 가짜 글자 잔존 — 화면상 거의 안 보여 유지.
+  - TTS: 릴리 Leda 396.8s / 말리 Kore 68.6s (화자별 1회). 말리 대사 2개는 의성어 시작 회피로 어순 변경("이런 거요? 음매~…", "엑스요! 그건…").
+  - **★whisper large-v3 경계 오류 11곳**: 말리 트랙 짧은 대사("네!"·"안 꿔요!")·의성어("하암")에서 접두어 매칭 실패 → 7곳 밀림 + 5곳 비례 폴백. 릴리 트랙은 다음 장면 첫 단어("그렇죠."·"셋째,"·"다섯째,"·"하나,")가 앞 장면 끝에 붙음 4곳. **장면 wav 49개 whisper small 재전사(머리·꼬리) 대조로 발견** → fix_boundaries.py(실측 무음 스냅)로 보정, 재검증 전부 일치. 2화자 강의에서 이 재전사 대조는 필수 단계로 볼 것.
+  - Windows ffmpeg 8.1.1 full_build 는 libass 있음 → 자막 ASS(subtitles 필터, 꾹꾹체 fontsdir) 사용. 드라이브 콜론 회피로 compose 에서 상대 경로. trim 옵션은 `end_frame`(`frames` 없음).
+  - 공통 scripts/hf_web_clips.py 에 `--sound` 옵션 추가(기본 off 유지 — 기존 편 동작 동일).
+  - 테스트본: `강의_CH1-1_유아_영상_규칙_final.mp4` 8:16, 1280x720, -17.1 LUFS. **Kling 클립 15개 자리는 시작 그림 + 줌으로 임시 처리** — 맥에서 MAC_CLIPS.md 대로 클립 생성 → clips/ 에 넣고 compose.py 재실행하면 교체.
+
+## 2026-10-29 — 강의 CH1-2 「말리 캐릭터 시트 만들기」
+- 1차 게이트 확정: 수강생 화면 = **Gemini 앱** / 실습 결과 V1·V2 **실제 생성** / 시트 낙서는 강의엔 가리고 원본도 정리.
+- **★기준 시트 malli_reference.png 오른쪽 아래 구석에 토토로 닮은 낙서 + "20.18" 서명 발견**(지브리풍 생성 부산물로 추정) → 위쪽 빈 종이 패치를 깃털 마스크로 덮어 지움(무료·로컬). 원본은 `images/style_ref/malli_reference_orig_20261029.png` 보관. 또 시트 왼쪽 아래 얼굴 클로즈업만 리본이 머리 위(나머지는 목걸이) — 시트는 그대로 두고 강의 검수 사례로 사용.
+- 대본·콘티 `output/storybook/강의_CH1-2_말리_캐릭터_시트/STORYBOARD_CH1-2.md` 52장면, 릴리 2,511자·말리 230자, 예상 약 10분(권장 12분 미만). 2차 게이트 자료 gate2_plan.md: 새 이미지 9장 이내, 새 Kling 4개 + 1-1 클립 4개 재사용. 승인 대기.
+
+## 2026-10-29 — 강의 CH1-2 테스트본: 동작 보강 + 목소리 구분 (사용자 피드백)
+- 사용자: "1-1은 릴리·말리가 말은 잘하는데 동작이 별로 없다. 동작을 할지 말지 정한 점수판 비교를 잘해서 움직임 있는 강의로. 두 목소리가 비슷해 구분이 어렵다(소개 영상은 확연했다). **테스트는 Wan 3.0 · 480p · 소리 켬, 이 설정은 아예 박아 두고** 테스트본을 만든 뒤 정식 제작 여부를 물어볼 것."
+- **[확정] 테스트 클립 설정 고정**: `scripts/hf_web_clips.py --test` = TEST_PRESET(wan-3.0·480p·sound on). 기본 Kling 호출은 기존과 동일(--model 은 기본값이 아닐 때만 hfmalli 로 전달). hfmalli 의 Wan 지원 여부는 미확인 → 맥 시험 실행(크레딧 0)에서 확인. docs/14·CLAUDE.md 반영.
+- **★1-1 동작 부족 원인**: ①클립 15개 배정했지만 실제 영상엔 0개(맥 전용 hfmalli → 임시 정지 그림+줌) ②클립이 있어도 compose 가 5초 재생 후 정지 줌 → 15~25초 릴리 장면 대부분 정지 ③말리 리액션 전부 정지 그림 ④이름표 없음.
+- **점수판 비교**: 동화 규칙(motion≥7 & importance≥85) 4개 / 이전 초안 8개 / **강의 규칙(캐릭터가 보이는 장면 motion≥4 & importance≥65) 19개**. 동화 규칙은 "절정만 움직임"이라 강의엔 부적합 — 강의는 정지 화면 지속 시간이 지루함을 만든다. 표는 gate2_plan.md 하단·make_clip_inputs.py CLIPS(점수판 단일 출처).
+- compose 개선(편 폴더 한정): loop 클립 = 정방향+역방향 핑퐁으로 장면 끝까지 / once = 한 번 + 마지막 프레임 줌. 카드 장면에 말하는 사람 원형 작은 화면(릴리 C12·말리 C16, 클립 없으면 그림+흔들림), 이름표, 카드 전환 시점 = 대사 속 단어 위치. 클립 없으면 시작 그림 줌 → 맥 클립 도착 후 compose 재실행.
+- **★목소리 구분 원인**: 음높이 측정(numpy 자기상관) 결과 1-1 말리 273Hz/릴리 216Hz 로 오히려 소개 영상(247/222Hz)보다 차이가 컸다 → 음높이가 아니라 **1-1 이 PART 감정 지시(선생님 톤)를 말리에게도 붙인 것 + 화면 단서 부재**. CH1-2 는 화자별 감정 지시 완전 분리(말리 "다섯 살 아이, 높고 통통 튀게" / 릴리 "어른 선생님, 차분한 중간 높이") → 말리 300Hz / 릴리 220Hz(차이 57→80Hz). 말리 2반음 올림(rubberband formant=preserved) A/B 샘플은 `_voice_ab/` (미적용, 사용자 청취 후 결정).
+- 실습 V1(강의 프롬프트 그대로, 첨부 없음) 실제 결과의 틀린 곳 = **아래 걷는 스케치 3개에 목걸이·리본·이름표 없음** → S05-08 대사를 이 실제 사례로 확정, V2 = V1 첨부 + "그 부분만 고쳐, 나머지 그대로" → 걷는 그림에 리본 추가·나머지 유지(1회 성공).
+- W02(시트 배치 복제 잘못된 예시) 생성 실패(작은 말리 안 생김) → 시트의 걷는 스케치를 로컬 합성(무료).
+- SSH 로 맥에서 hfmalli 를 직접 돌리는 건 자격 증명 없음 → 하지 않음. Z: 드라이브 = 맥 HDD 라 파일은 그대로 공유됨.
+- **[제작 기록] 테스트본 완성**: `강의_CH1-2_말리_캐릭터_시트_final.mp4` 10:16(615.8s, 70MB, 1280x720). 그림 9장 + W02 로컬 합성, TTS 릴리 Leda 526.6s / 말리 Kore 56.7s. 카드 40장.
+  - 경계: 재전사 대조(check_boundaries.py, 장면 50개)로 3곳 발견 → fix_boundaries.py. 말리 S04-07~S06-04 한 칸씩 밀림, 릴리 S03-06/S04-01·S06-03/S06-05. **★whisper small word_timestamps 가 실제보다 ~1s 이르게 찍혀** 그 값으로 스냅하면 "똑같다" 끝이 잘림 → find_silences 실측 무음 목록을 보고 경계를 지정해야 함.
+  - Wan 클립 19개 자리는 시작 그림 + 줌(맥 MAC_CLIPS.md 실행 후 compose 재실행). 작은 화면·이름표·카드 전환은 무료 동작으로 이미 반영.
+- **[확정] 사용자 (2026-10-29)**: ①다음 단계 = 맥에서 Wan 클립 먼저(시험 실행 비용 확인 → 제출 → compose 재실행 → 움직이는 테스트본 보고 정식 여부 결정) ②말리 목소리 = A 지금 그대로(연기 지시 분리만, 음높이 가공 없음). `_voice_ab/` 의 B(2반음)는 미채택.
+- **[확정] 사용자 (2026-10-29): CH1-2 정식 클립 = Kling 3.0 · 720p · 5초 · 16:9 · 소리 켬(현장음만), C01~C19 19개.** 비교 근거(Higgsfield 블로그 가격): Kling 3.0 10cr/5초 720p(19개 ≈190) / Kling 4.0 13.75~25cr(같은 페이지에 두 값, 이유 미기재, ≈261~475) / Wan 3.0 가격 미확인(Wan 2.7 = 8cr). 강의 클립은 5초 단순 동작 + compose 반복 재생이라 4.0 의 30초·키프레임·참조 기능이 쓰이지 않음, Kling 3.0 은 hf_web_clips.py 기본값이라 hfmalli 수정 불필요. 얼굴 변형 클립만 4.0 참조 방식으로 개별 재생성 검토.
+  - 실행 순서 = MAC_CLIPS.md 하단 "정식 버전". **Wan 테스트 클립이 clips/ 에 있으면 clips_wan_test/ 로 먼저 옮길 것** (같은 파일명이면 건너뛰고, hf_web_jobs.json 기록이 있으면 재제출 안 함). `--max-credits` 기본 10 이라 소리 켬 비용이 10 넘으면 막힘 → 시험 실행 cost 보고 후 올림.
+  - Windows PC(이 세션) 기준 CH1-2 폴더에 clips/ 없음 = Wan 테스트 클립이 아직 이 폴더에 안 들어옴.
+
+## 2026-10-29 — 강의 CH1-2 정식 클립 Kling 3.0 19개 생성 (맥)
+- 사용자: "Wan 테스트본이 맘에 든다 → Kling 3.0 720p 로". 단, 실제로는 Wan 클립이 만들어진 적 없음(clips/·hf_web_jobs.json 없음) — 사용자가 본 테스트본은 시작 그림+줌 버전.
+- 전용 Chrome(9341) 로그아웃 상태였음 → `hfmalli login` 후 사용자 로그인. ★사용자가 higgsfield.study(9338)·Aside 로 착각하기 쉬움 — `.command` 바로가기 없이도 9341 Chrome 은 떠 있었고 CDP `/json/activate` 로 앞으로 띄워 안내.
+- 시험 실행: Kling 3.0 · std(720p) · 5초 · 16:9 · 소리 켬 = **8.75cr/클립** (소리 끔 6.25). 승인 후 C01~C19 제출, 19개 모두 completed, 총 166.25cr, 잔액 3,771.56 → 3,605.31. 클립 1284x716 5.04s, aac 오디오 포함. 끝 프레임 시트로 얼굴·목걸이 변형 없음 확인.
+- 화면에 "무료 생성 사용 100개 남음" 스위치 존재(꺼둔 채 진행). 적용 모델 미확인, hf_web_clips.py 미지원.
+- ★맥 Homebrew ffmpeg 9.0.2 에 libass(subtitles)·drawtext 없음 + 편 compose.py 의 FFDIR 이 Windows 하드코딩 → 맥 조립 불가. Windows 에서 compose 재실행 or 맥에 ffmpeg-full(keg-only) 설치.
+- **맥 조립 완료 (2026-10-29)**: `brew install ffmpeg-full`(9.0.2, keg-only, /opt/homebrew/opt/ffmpeg-full/bin, libass·drawtext 있음). CH1-2 compose.py 에 `sys.platform == "darwin"` 분기 2곳만 추가(FFDIR, 이름표 글꼴 맑은 고딕 굵게 → AppleSDGothicNeo.ttc index=6 Bold). Windows 동작은 그대로.
+  - 결과 `강의_CH1-2_말리_캐릭터_시트_final.mp4` 616.1s, 1280x720, -16.7 LUFS, 클립 장면 26곳 모두 Kling 클립 사용. 프레임 14장 추출 확인(클립 장면·PIP 카드·퀴즈·엔딩 자막 일치). C13 은 프롬프트대로 점프하며 귀가 펄럭여 중간 프레임 얼굴 윤곽이 잠깐 달라 보이나 끝 프레임은 원형 복귀 — 유지. 클립 현장음에 목소리 섞임 여부는 귀로 미확인.
+  - 이전 테스트본(정지 그림+줌)은 세션 scratchpad 에만 임시 백업.
+
+## 2026-10-29 — 강의 CH1-3 「그림체 기준 그림 정하기」 착수
+- 사용자 요청: 1-2 에 이어 릴리·말리 주인공, 계획과 길이 먼저 보고.
+- 발견: images/style_ref 에 **독립된 그림체 기준 그림이 없음** (말리·릴리 시트 + 7월 지브리 참조만). 지금은 시트가 그림체 기준을 겸함.
+- 1차 게이트 자료 `output/storybook/강의_CH1-3_그림체_기준_그림/gate1_outline.md`: 7파트 약 9분 30초(커리큘럼 8:00 / CH1 29분 맞춤 10:28), 무섭지 않은 그림 기준 5개 초안, 확인 질문 5개(길이·기준 그림 채널 규칙 등록·말리 포함 여부·지브리→수채화 실제 사례 사용·기준 5개). 승인 대기.
+- **1차 게이트 확정 (2026-10-29, 사용자 "그대로 가자")**: 약 9분 30초 / 기준 그림에 말리 없음 / 지브리→수채화 실제 사례 사용 / 무섭지 않은 그림 기준 5개 초안대로.
+- 대본·콘티 `STORYBOARD_CH1-3.md` 50장면 + `practice_prompt.txt`(앞마당 풍경, 말리 없음) + 2차 게이트 `gate2_plan.md`: 새 이미지 11장(N01~N04 릴리 동작, W01a~c 틀린 그림체, T01·T02 호랑이 X·O, V1·V2), **클립 19개 중 15개는 1-2 와 시작 그림·동작이 같아 1-2 클립 복사 → 새 클립 4개(약 40크레딧, Kling 3.0)**. 실제 사례 3장면 중 아기돼지는 style_ref/ghibli_scene_ref.png, 팥죽 할머니·도깨비 방망이는 리포에 그림 없음(images/ 비어 있음) → Obsidian 50_Outputs 완성본 mp4 프레임 추출 필요. 기준 그림 채널 규칙 등록 여부 재질문. 승인 대기.
+
+## 2026-10-29 — 강의 CH2-1 「Claude Code 설치와 로그인」 착수
+- 사용자 요청: CH2 도구 세팅 5강 중 1번부터. 다운로드·설치 위치를 명확히, 실제 화면처럼 따라 하기 쉬운 이미지(캡처가 어려우면 Gemini), 릴리·말리 진행. 스토리라인 먼저.
+- 공식 문서(code.claude.com/docs/en/setup) 확인: Windows `irm https://claude.ai/install.ps1 | iex`(관리자 불필요) / Mac `curl -fsSL https://claude.ai/install.sh | bash` / 설치 중 진행 표시 없음 / 새 창에서 `claude --version` / 무료 플랜 불가(Pro 이상) / Git for Windows 선택 사항(CH2-2로).
+- 제안: 웹 화면 = 크롬 실제 캡처, 터미널 화면 = HTML 재현 렌더링(AI 생성은 화면 글자를 틀리게 그려 따라 하기 실패 위험), Gemini는 캐릭터 장면만.
+- 1차 게이트 자료: `output/storybook/강의_CH2-1_Claude_Code_설치와_로그인/gate1_outline.md` (7파트 약 10분, 확인 질문 5개). 승인 대기.
+- **1차 게이트 확정 (2026-10-29, 제안대로)**: Windows 중심 + Mac 요약 / 실제 캡처 + 터미널 HTML 재현, Gemini는 캐릭터 장면만 / 공식 한 줄 설치만(데스크톱 앱 소개 안 함) / 로그인 재캡처 OK(계정 정보 가림) / 요금 금액 생략.
+- 대본·콘티 `STORYBOARD_CH2-1.md` 49장면, 릴리 약 2,000자·말리 약 205자, 예상 약 8분 30초(권장 10분보다 짧음 — 억지로 늘리지 않음, 10분 맞추려면 첫 심부름 실습 추가안). 추가: 공식 페이지에서만 복사 약속, 탐색기 폴더 확인, 입력 화면 3초 따라 하기 멈춤.
+- 2차 게이트 `gate2_plan.md`: 화면 약 20장 무료(캡처·HTML), 새 그림 P01~P04, 클립 16개 = 새 4 + 1-2 재사용 12(1-2 clips/ 이 PC에 있음) → 정식 약 40크레딧. 재로그인 캡처는 CLAUDE_CONFIG_DIR 임시 폴더로 기존 로그인 유지 제안. 승인 대기.
+- **2차 게이트 승인 (2026-10-29, 제안대로)**: 길이 약 8분 30초 / 재로그인 캡처 = CLAUDE_CONFIG_DIR 임시 폴더.
+- **[제작 기록] 테스트본 완성**: `강의_CH2-1_Claude_Code_설치와_로그인_final.mp4` 8:57(537.4s), 1280x720, -16.3 LUFS. 52장면, 카드 43장(화면 카드 26 + 글자 카드 17), 새 그림 P01~P04(P03 은 머리 리본이 붙어 1회 재생성), TTS 릴리 Leda / 말리 Kore 화자별 1회.
+  - 화면 캡처 방법: 공식 한국어 문서 `code.claude.com/docs/ko/quickstart` 크롬 캡처 / Windows 설정·시작 메뉴·탐색기는 `capture_windows.py`(창 영역 캡처, 이름·이메일·PC 이름·아바타 흐림) / **Claude Code 첫 실행 화면은 `capture_terminal.py` = pywinpty + pyte 가상 터미널로 실제 글자·색을 스냅숏 JSON 으로 기록 → render_cards.py 가 칸 단위로 재현**. 탐색기 목록은 실제 사용자 폴더(숨김 폴더 129개)가 수강생 화면과 달라 창 틀만 실제, 목록은 새 PC 처럼 다시 그림. 첫 답장 중 이 PC 개인 환경(콘텐츠 하네스·연결 서비스) 2줄과 자식 세션 경고 줄은 뺌.
+  - **★발견 (Claude Code 2.1.312 첫 실행 순서)**: 테마(기본 Dark) → 로그인 방법(기본 1번 구독) → 브라우저 로그인 → "Login successful. Press Enter" → Security notes → 터미널 추천 설정(Yes/No) → **폴더 신뢰 질문은 기본 선택이 "No, exit"** (그냥 Enter 누르면 종료) → 강의에서 "아래 화살표로 Yes" 강조 장면 추가. 모든 화면 문구는 영어.
+  - 설치 스크립트 출력 실측: "Setting up Claude Code..." → "✔ Claude Code successfully installed! / Version / Location / Next" → "✅ Installation complete!". 설치 파일 299MB 다운로드가 매우 느려(약 125MB 에서 정체) 중단하고 같은 버전 `claude install latest` 로 출력만 확인.
+  - 승인(Authorize) 버튼 화면은 캡처 전에 로그인이 끝나 확보 못함 → 로그인 페이지 캡처 + "화면 안내에 따라 승인" 대사로 대체.
+  - 경계: 재전사 대조로 3곳(릴리 S05-03/04 "여기서 아주 중요한 점", S06-09/11 "안녕, 넌 누구야?", 말리 S05-06/08 "클로드 버전") → 구간 재전사로 확인 후 fix_boundaries.py(실측 무음 가운데). 장면 첫 문장 중복 3곳(Claude Code는 / 이제 일꾼 / 다음은)은 TTS 전에 고쳐 둠.
+  - compose: HOLD(따라 하기 멈춤 3초 + 엔딩 3초) 추가 시 카드 전환 비율이 멈춤 시간까지 늘어나 마지막 카드가 1.7초만 보이던 문제 → 비율을 대사 구간에만 적용.
+  - 클립 C20~C23 4개는 시작 그림 + 줌 임시 처리. 맥에서 MAC_CLIPS.md 대로 Wan 테스트 → 정식 여부 사용자 결정. 1-2 Kling 클립 12개는 복사해 이미 사용 중.
+  - 부산물: 이 PC `C:\Users\user\malli-studio` 빈 폴더 생성(캡처용, 남겨 둠). 임시 로그인 설정 폴더(scratchpad/cc_config)는 삭제.
+- **[방향 전환] 사용자 (2026-10-29)**: 1-3 의 핵심은 "동화마다 그림이 잔인할 수도 예쁠 수도 있으니 기준이 필요" → 지금까지 만든 말리 동화를 근거로 Claude 가 그림체 기준을 정하고, 계획서(대본·소품 포함)를 쓰고, 말리·릴리 티키타카로 재미있게. 앞서 쓴 "기준 그림 한 장" 중심 콘티(STORYBOARD_CH1-3.md)는 이 방향 확정 시 교체.
+  - `그림체_기준안.md`: 38편 순화 기록(10_TALE_LIBRARY) + 그림 재생성 기록(context-notes)에서 뽑은 10개 — A 잔인하지 않게 5(아무도 죽거나 다치지 않음·때리기 대신 소동·악역은 심술꾸러기 얼굴·무서운 것은 부드럽게·마지막은 화해와 나눔) / B 예쁘고 한결같게 4(표정은 대사를 따라감·캐릭터 매번 같게·이야기 나라에 맞는 배경·그림 속 글자 없음) / C 그림체 하나(기준 그림 첨부). 한 줄 요약 "아무도 다치지 않는 이야기를, 늘 같은 말리 나라 그림으로".
+  - `계획서_v2.md`: 티키타카 장치 = 말리의 무서운 호랑이(처음·끝 줄거리), 심사위원 말리 O/X, 탐정 말리 틀린 그림 찾기, 진짜 말리 찾기. 대사 1,980자(말리 24%) → 약 7분 30초~8분. 새 그림 4장(M09 스케치북·M10 돋보기·D01 사과인데 째려봄·D02 한국 마을인데 서양 집) + 새 클립 2개. 실제 동화 장면은 Obsidian 50_Outputs/말리동화 완성본 프레임(무료).
+  - 이미 만든 그림 11장(N01~N04·W01a~c·T01·T02·V1·V2)은 새 계획에서 전부 재사용. 구 대본 TTS 는 `audio_구대본_미사용/` 으로 옮김(캐시 오용 방지).
+  - **★ `images/style_ref/ghibli_scene_ref.png` 는 아기돼지 s09 가 아니라 다른 회사 캐릭터(토토로 등)가 가득한 사용자 참고 그림** — 강의·채널 화면에 절대 쓰지 말 것. 아기돼지 s09 실제 컷 = `ghibli_scene_ref_backup_s09.png`.
+
+## 2026-10-29 — Higgsfield 계정 변경
+- **[확정] 사용자: Higgsfield 계정을 higgsfield.study@gmail.com 으로 변경** (기존 yookwanhee6@gmail.com).
+- 리포 반영: docs/14_HIGGSFIELD_WEB.md(계정·기록 경로·ACCOUNT_MISMATCH 조치·제출 직전 확인), CLAUDE.md, scripts/hf_web_clips.py 주석, 강의 CH1-1·CH1-2·CH2-1 MAC_CLIPS.md 의 whoami 확인 문구.
+- 말리동화 전용 Chrome(포트 9341, 프로필 폴더 malli-yookwanhee6 이름 그대로)은 유지하고 로그인 계정만 교체. 런웨이 Chrome(9338)도 같은 higgsfield.study → **두 작업이 크레딧 잔액을 공유**.
+- **리포 밖 맥 작업 남음**: `~/.local/bin/hfmalli` 의 기대 계정 값(yookwanhee6 → higgsfield.study)과 기록 경로 수정, 말리 Chrome 에서 `hfmalli login` 후 higgsfield.study 로 로그인, `hfmalli whoami` 로 ok:true 확인. 이 PC 에선 맥 홈 폴더에 접근 불가라 못 함.
+- Google Drive 경로(scripts/orca_watcher.sh·install_watcher.sh 의 GoogleDrive-yookwanhee6)는 Higgsfield 와 무관해 그대로 둠.
+- **[확정·정정] 사용자 (2026-10-29): Chrome 도 런웨이 Chrome(포트 9338) 공유로 변경** — 위 "9341 유지" 는 폐기. 9338 은 이미 higgsfield.study 로그인 상태. 같은 창·쿠키·크레딧을 런웨이 작업과 공유하므로 로그아웃 금지, 런웨이 탭 건드리지 않기. 반영: docs/14(Chrome·켜는 법·쿠키 설명), CLAUDE.md, hf_web_clips.py 주석.
+- **맥 작업 갱신**: `~/.local/bin/hfmalli` 의 ①기대 계정 yookwanhee6 → higgsfield.study ②CDP 포트 9341 → 9338 ③기록 경로. `hfmalli login` 은 불필요(이미 로그인). 수정 후 `hfmalli whoami` ok:true 확인. 바탕화면 `Higgsfield 말리동화 브라우저 열기.command`(9341)는 더 쓰지 않음.
+
+## 2026-10-29 — 클립 테스트·정식 설정 고정
+- **[확정] 사용자: "앞으로 영상은 테스트는 Wan 3.0 480p 소리 on, 테스트 통과하면 Wan 3.0 720p 소리 On"**
+- 테스트 = `hf_web_clips.py --test` (TEST_PRESET, 기존 그대로). 정식 = `hf_web_clips.py --final` (FINAL_PRESET wan-3.0·720p·sound on, 신규). 두 옵션은 동시에 줄 수 없음. 옵션 없이 실행하면 기존 기본값(Kling 3.0·720p·소리 끔) 그대로.
+- CH1-2 정식 클립을 Kling 3.0 720p 로 만든 기록(위)은 과거 결정으로 유지. **다음 편부터 정식도 Wan 3.0.**
+- 미확인: Wan 3.0 720p 소리 켬의 클립당 크레딧(`--max-credits` 기본 10 초과 여부) → 첫 `--final` 시험 실행에서 확인. hfmalli 의 Wan 지원 여부도 아직 맥 시험 실행 전.
+- 반영: CLAUDE.md, docs/14_HIGGSFIELD_WEB.md, scripts/hf_web_clips.py.
+
+## 2026-10-30 — CH2-1 테스트본 프레임 검증 + 첫 인사 카드 보정
+- 18개 시점 프레임 추출 검증: 자막·화면 일치, 번호 표시·안내 띠·개인정보 가림·바닥 자막·엔딩 CTA 정상.
+- 발견: 첫 인사 카드 T11a(7:35 부근) 머리글에 이 PC 의 `Opus 5.5 · Claude Max` 와 Auto mode 안내가 그대로 보임 → Pro 수강생 화면과 다름.
+- **[확정] 사용자: 1안 = 안내 문구 추가.** render_cards.py `snap_card(..., note=)` 인자 추가, T11a 에 "위쪽 글자는 요금제에 따라 달라도 괜찮아요" 칩(머리글 오른쪽 빈 곳, 하늘색). T11a 만 다시 그리고 `_build/S06-09.mp4` 만 지운 뒤 compose 재실행. 결과 537.4s · -16.3 LUFS 그대로, 455s 프레임으로 확인.
+- CH2-1 MAC_CLIPS.md 2) 정식 버전을 Kling 3.0 → `--final`(Wan 3.0·720p·소리 켬) 로 갱신 (2026-10-30, CLAUDE.md 새 규칙 반영). 맥 클립 아직 없음(clips/ 에 C20~C23·hf_web_jobs.json 없음).
+
+## 2026-10-30 — 강의 CH1-3 「그림체 기준 정하기」 테스트본 완성
+- 계획서 v2 승인(사용자 "진행해") → 새 그림 4장(M09·M10·D01·D02, 재생성 0) + 실제 동화 장면 8장(R01~R08, Obsidian 완성본에서 자막 부분 잘라 추출, 무료).
+- **★다섯 친구 불 장면은 기록("불길 부드러운 주황")과 달리 완성본 불길이 강해 좋은 예시에서 뺌** → A4 근거를 의좋은 형제 달밤·청개구리 꽃 무덤으로. 기준안에도 메모.
+- 콘티 v2 57장면(구 콘티 = STORYBOARD_CH1-3_구버전.md). TTS 릴리 315s / 말리 114s. 경계 재전사 대조로 5곳 발견(릴리 S03-12·S03-14·S04-03, 말리 S03-07·S06-02) → fix_boundaries.py 실측 무음으로 보정, S03-14 는 한 번 더 당김(재검증에서 "다섯째"가 앞 장면에 남음).
+- 결과: `강의_CH1-3_그림체_기준_그림_final.mp4` 7:44(464.2s), -16.6 LUFS, 14장면 프레임 검증. 카드 42장.
+- 클립: compose.py clip_path 가 CH1-2 clips/ 도 찾음(REUSE) → **CH1-2 Kling 클립 13개(C07~C19)가 이미 들어감**. 새 클립 C20~C25 6개만 정지 그림(맥 MAC_CLIPS.md). CLAUDE.md 정식 규칙이 Wan 3.0·720p `--final` 로 바뀌어 MAC_CLIPS 정식 명령도 `--final` 로 맞춤 — 재사용 13개(Kling)와 새 6개(Wan) 화질 차이는 테스트본에서 확인 필요.
+- **★Z: 네트워크 드라이브에서 PowerShell `Get-Content -Raw` → `.Replace` → `Set-Content` 로 파일을 고치면 앞부분이 겹쳐 써져 파일이 깨짐(render_cards.py·fix_boundaries.py 2번 발생)**. 파일 수정은 Edit/Write 도구나 Python write_text 로 할 것.
+
+## 2026-10-30 — 강의 CH2-2 「Python · FFmpeg · Git 설치」 착수 (1차 게이트)
+- 사용자: CH2-1 맥 클립 대기 중 CH2-2 1차 게이트 진행 선택.
+- 공식 확인: Python Windows 권장 = **Python install manager 26.4**(예전 .exe 는 3.14부터 deprecated, 3.16부터 없음, `python`·`py`·`pymanager`) / FFmpeg `winget install Gyan.FFmpeg`(9.0.2) / Git `winget install --id Git.Git -e --source winget`(2.56.0).
+- **★커리큘럼 html "python.org (설치 때 PATH 추가 체크)" 는 구식** → install manager 기준으로 씀.
+- **★이 PC `py list` → legacy py.exe 경고(Python Launcher 제거 안내)** → 막혔을 때 항목으로 넣음.
+- ⚠ 이 PC FFmpeg 업그레이드·재설치 금지: compose.py 가 ffmpeg-8.1.1-full_build 경로 하드코딩.
+- 개요 `output/storybook/강의_CH2-2_Python_FFmpeg_Git_설치/gate1_outline.md` (7파트 약 12분, 확인 질문 5개). 승인 대기.
+- **[확정] 1차 게이트 승인 (2026-10-30)**: ①Python = python.org install manager, FFmpeg·Git = winget ②Python 3.14 로 맞춤(`py install 3.14`) ③Claude Code 에게 설치 시키는 장면 넣지 않음 ④설치 진행 화면 = winget·pymanager 실제 출력 형식 재현(가상 터미널) ⑤Git 첫 설정은 CH2-5 로 미룸(제안 기본값). 다음: 대본·씬 분할·점수표·배정표(2차 게이트).
+
+## 2026-10-30 — 클립 모델 Wan 3.0 통일
+- **[확정] 사용자: "Wan 3.0 으로 통일"** → 10-29 CH1-2 "정식 = Kling 3.0" 결정은 앞으로 쓰지 않음. 테스트 `--test`(Wan 3.0·480p·소리 켬) / 정식 `--final`(Wan 3.0·720p·소리 켬).
+- `scripts/hf_web_clips.py`: `--test`/`--final` 없으면 SystemExit (옵션 없는 기본 실행 = Kling 이라 차단). 확인 완료.
+- 문서: docs/14 기본 설정·예시 명령, CH1-1 MAC_CLIPS(--test/--final 로), CH1-2 MAC_CLIPS(이미 만든 Kling 19개 기록이라 재사용 금지 머리말).
+- ~~[폐기] 사용자: 이미 만든 Kling 클립(CH1-2 19개, CH2-1 재사용 12개)은 그대로 둠** — 재생성 안 함(크레딧 0). 새로 만드는 클립만 Wan 3.0.~~ → 바로 아래로 뒤집힘
+- **[확정] 사용자 (2026-10-30): "전체를 다 Wan 3.0 으로"** — 이미 만든 Kling 클립도 Wan 으로 다시 만든다.
+  - Kling 이 쓰인 곳: CH1-2 원본 19개 / CH1-3 = compose REUSE 로 CH1-2 `clips/` 의 C07~C19 직접 읽음 / CH2-1 = C05·C07~C17 12개 복사본. → **CH1-2 19개만 Wan 으로 만들면 셋 다 해결**(CH1-3 자동, CH2-1 은 복사).
+  - 파일 이동(삭제 없음): CH1-2 `clips/`(mp4 19 + hf_web_jobs.json) → `clips_kling/`, 빈 `clips/` 새로 만듦. CH2-1 `clips/*.mp4` 12개 → `clips_kling/`. 안 옮기면 스크립트가 "이미 있음"·제출 기록 때문에 건너뜀.
+  - ⚠ 지금 CH1-2·CH1-3·CH2-1 을 compose 하면 그 장면들이 정지 그림+줌으로 나옴(기존 final.mp4 는 그대로). 되돌리려면 clips_kling → clips.
+  - 순서: 맥 hfmalli(계정·9338) 수정 → CH1-2 `--test` 19개 + CH2-1 `--test --scenes C20~C23` → 테스트본 조립·사용자 확인 → `--final` → CH2-1 로 12개 복사 → 세 강의 compose 재실행·프레임 검증. 각 단계 시험 실행 cost 보고 후 승인.
+  - MAC_CLIPS.md 갱신: CH1-2(Kling 정식 → Wan `--final`), CH2-1(12개 복사 안내, `--scenes` 필수 경고).
+
+- **2차 게이트 자료 작성 (2026-10-30)**: `STORYBOARD_CH2-2.md`(49장면, 대사 릴리 약 2,310자·말리 약 260자 → 약 10분) + `gate2_plan.md`. 새 그림 P05~P08 4장, 새 클립 C30~C32 3개(번호 C30번대 = CH1-3·CH2-1 의 C20번대와 안 겹치게), CH2-1 C22·C23 + CH1-2 12개 재사용. 승인 대기.
+  - **★install manager 설정 도우미(`pymanager install --configure --dry-run` 으로 확인) 마지막 질문 `Install CPython now? [Y/n]` 기본값 Y → 엔터만 치면 최신 3.15 설치.** 3.14 로 맞추려면 여기만 n → 대사 "와이, 와이, 마지막만 엔".
+  - `pymanager list` 를 처음 쳤을 때 install manager 가 26.4 로 자동 업데이트됨(이 PC, 영향 없음). `py install 3.14` dry-run = `Installing Python 3.14.10.` (최신 3.14.x = 3.14.10).
+  - 이 PC 에서 직접 볼 수 없는 문구(긴 경로·PATH 질문, winget 첫 약관 질문, 설치 막대, Git 설치 창)는 캡처 단계에서 확정. Mac 요약(`brew install python@3.14 ffmpeg git`)은 맥 실측 전 미확정.
+- **[확정] 2차 게이트 승인 (2026-10-30, 사용자 "진행해")**: 약 10분(맛보기 없음) / Windows 기준 테스트본 먼저, Mac 요약 카드는 맥 실측 후 수정 / 유튜브 설명란에 설치 명령 3줄 넣기 → 업로드 체크에 추가.
+- **캡처 단계 (2026-10-30)**: W01(python.org — 버튼 `Download Python install manager`)·W06(git-scm.com/install/windows, 복사 버튼 없음 → 대사 "빨간 글씨 한 줄 복사")은 헤드리스 크롬 `--screenshot` 으로 실제 캡처(로그인·개인정보 없음, PC 조작 없음).
+  - winget 실제 패키지: Git.Git 2.56.0.3 → `git version 2.56.0.windows.3` / Gyan.FFmpeg 9.0.2 portable zip `ffmpeg-9.0.2-full_build`.
+  - **★capture_windows.py 시작 메뉴 자동 입력 사고**: Win 키 탭 후 시작 메뉴가 안 열린 채 글자가 바탕화면으로 들어감 → 출처 모를 "설치 — 현재 설치이(가) 실행 중입니다!" 창 발생. `ms-windows-store://` 는 이 PC 에 연결 앱 없음 → "앱 선택" 창(닫음). **이 PC 에서 키 입력 자동화는 쓰지 말 것** (CH2-1 은 됐지만 재현 안 됨).
+  - **[확정] 사용자 "진행해" = 3안**: W02·W03·W04·W08 은 실제 화면 대신 재현 그림·카드로 만듦(PC 조작 없음).
+
+- 2026-10-30 사용자: **클립 생성을 맥 대신 Windows 에서** 하기로 함 (맥으로 넘기는 방법을 모름). 방식 = Windows Chrome + Claude 확장으로 Higgsfield 웹 직접 조작(웹 전용 규칙 유지, hfmalli 미사용). 확인 결과 Windows Chrome 의 Higgsfield 로그인은 @streamingruler1405(Ultra, 4,413 크레딧)로, 지정 계정 higgsfield.study 인지 미확인 → 사용자 확인 전 제출 금지. workflow/mac_wan_전환_지시문.md 는 보류.
+- **CH2-2 제작 진행 (2026-10-30)**:
+  - **★pymanager 공식 소스(github python/pymanager src/manage/firstrun.py) 확인**: 새 PC 설정 도우미 질문 = `Update setting now? [y/N]`(긴 경로, 관리자 승인·재부팅 필요) → `Add commands directory to your PATH now? [y/N]` → `Install CPython now? [Y/n]`(런타임 없음). 최신 확인 단계에서 `Install CPython now?` 가 **한 번 더** 나올 수 있음 → 대사를 "Install CPython 질문에는 n" 으로 수정. `py install` 성공 문구 = `Python 3.14.10 will be launched by python.exe.` (install_command.py), PATH 질문 없음.
+  - 그림 P05~P08 생성(재생성 0, 뒤쪽 책 표지에 작은 가짜 글자 흔적 — 작아서 유지). 카드 38장 render_cards.py (W02·W03·W04·W08 = "화면 모양을 다시 그린 그림" 표시).
+  - 클립: make_clip_inputs.py `clip_prompts.json` 에 **새 C30~C32 만** 넣음(재사용 클립 실수 재생성 방지). compose.py clip_path = 이 편 clips → CH2-1 clips → CH1-2 clips.
+  - TTS: 첫 실행은 대사 수정 전이라 릴리만 지우고 재실행(말리 12장면은 유지). PID 시작 시각을 화면 시계로 잘못 읽어 남의 프로세스로 오인할 뻔함 → `date` 로 현재 시각부터 확인할 것.
+  - MAC_CLIPS.md 머리에 "클립은 Windows Chrome + Claude 확장, @streamingruler1405" 변경 메모.
+
+## 2026-10-30 — 강의 CH3-1 「퍼블릭 도메인 동화 150편」 1차 게이트 개요 (Orca 입력용)
+- 사용자 요청: CH3 「어떤 동화를 만들까요?」 첫 강의 MD 를 맥미니 Orca 의 Claude 에 넣어 영상을 만들 수 있게. 3-2·3-3 은 나중에 따로.
+- 산출: `output/storybook/강의_CH3-1_퍼블릭_도메인_동화_150편/gate1_outline.md` — CH2-2 gate1_outline 형식 + 맨 아래 「Orca 실행 순서」(읽을 문서 → 1차 게이트 승인 대기 → STORYBOARD_CH3-1.md → gate2_plan 승인 대기 → CH2-2 스크립트 복사 제작 → 프레임 검증).
+- 내용: 저작권 기준(사후 70년, 2013-07-01 전 50년) + 함정 3가지(번역·재화본 문장 / 영화·애니 캐릭터 / 전래동화 그림책) → "줄거리는 빌리고 문장과 그림은 새로". 수집 = Claude 에게 갈래별 실습 프롬프트, 지어낸 제목은 Gutenberg·공유마당·구비문학대계로 확인, 표 열 5개(적합도·비고는 3-2 에서). 활용 A 그대로 영상화 / B 뼈대만 빌려 새 동화(하린 샘플 사례).
+- **★발견: docs/10_TALE_LIBRARY.md 표는 실제 140편**(이솝 34·그림 22·안데르센 17·페로 6·한국 32·아시아·아랍 13·유럽 등 16), ✅ 39행. 머리말 "약 150편"·커리큘럼 "150편"과 차이 → 확인 질문 1. 적합도 상 77·중 54·하 9.
+- 번호 예약: 새 그림 P09~, 클립 C40번대(CH2-2 P05~P08·C30번대와 안 겹치게). 승인 대기.
+
+## 2026-10-30 — 강의 CH2-2 「Python · FFmpeg · Git 설치」 테스트본 완성 (Windows 로컬)
+- 작업 중 Z: 네트워크 드라이브(맥 HDD) 연결이 끊김 → 릴리 Whisper 분할 결과가 저장되지 않음(exit 0 이었지만 장면 wav 없음). **[확정] 사용자: "그냥 윈도에서 다 만들어줘"** → `C:\malli_local` 에 AGENTS.md + assets/bgm/storybook + 편 폴더를 복사해 거기서 분할·보정·조립, 끝난 뒤 Z: 로 robocopy(_build·_frames 제외). compose ROOT(AGENTS.md 기준)·BGM 경로가 로컬에서도 그대로 동작.
+- 릴리 TTS 463.6s(원본은 캐시로 재사용, 재호출 없음), 말리 12장면 유지. check_boundaries 의심 15곳 중 실제 경계 문제 3곳(나머지는 small 모델 철자 차이): 릴리 "하나 더요"→S03-11, "새 창에서"→S04-07(비례 폴백 장면), 말리 "외웠어요"→S03-06. fix_boundaries.py 로 보정 후 재전사로 확인.
+- 결과 `강의_CH2-2_Python_FFmpeg_Git_설치_final.mp4` **9:39(579.1s)**, 1280x720, -16.4 LUFS, 프레임 16장 검증(자막·카드·이름표·작은 화면 일치).
+- 클립 자리(C30~C32 새 3개, C05~C17·C22·C23 재사용)는 전부 정지 그림 + 줌 — Wan 클립이 아직 없음. 클립이 생기면 compose.py 재실행만 하면 교체.
+
+- 2026-10-30 **Wan 3.0 테스트 클립 23개 완료 (Windows Chrome)**: 계정 @streamingruler1405 사용자 확정("이 계정으로 만들어줘"). Wan 3.0 · 480p · 5초 · 소리 켬 = 5크레딧(할인 전 7), 720p = 9크레딧(할인 전 13). 자동충전 꺼짐, 동시 생성 8개. 총 115크레딧.
+  - CH1-2 C01~C19 → 강의_CH1-2/clips, CH2-1 C20~C23 → 강의_CH2-1/clips, CH2-1 에 CH1-2 의 C05·C07~C17 복사. 모두 856x478·5초·오디오 포함. 시작 그림↔클립 대조표로 짝 확인.
+  - 웹 조작 요령: 시작 그림은 X(제거) 후 업로드해야 바뀜(덮어 올리면 이전 그림 유지). 프롬프트는 contenteditable 이라 execCommand insertText 무시됨 → Range 로 전체 선택 + Delete 키 + 키보드 입력. 업로드가 blob 상태로 멈추면 제거 후 재업로드. 결과는 히스토리 카드 프롬프트 첫 문장으로 매칭(목록이 가상 스크롤이라 스크롤하며 수집). 업로드는 scratchpad 경로만 허용(Z: 경로 거부).
+  - 예전 Kling 최종본은 *_final_kling.mp4 로 백업, _build 의 클립 캐시(Cxx_pp/last, Sxx mp4) 삭제 후 재조립.
+- **CH2-2 클립 (2026-10-30, 사용자 "진행")**: Windows Chrome + Claude 확장, 계정 @streamingruler1405(Ultra) 확인 후 C30~C32 Wan 3.0 · 480p · 5s · 소리 켬, **5크레딧 × 3 = 15**. 다른 세션의 CH1-2 19개·CH2-1 16개 Wan 작업이 11:28 에 끝난 것을 폴더·화면으로 확인한 뒤 시작.
+  - **★Higgsfield 입력 상태는 탭·세션끼리 공유** → 열면 다른 세션의 마지막 시작 그림·프롬프트(CH2-1 C23)가 남아 있음. 프롬프트 칸은 contenteditable 이라 ctrl+a → Delete 로 안 지워지고 **새 글이 뒤에 붙음(1,157자)** → ctrl+a → BackSpace 로 비우고, 제출 전 JS 로 `[contenteditable]` innerText 길이·머리를 확인할 것.
+  - 파일 업로드는 작업 폴더(Z:)·C:\malli_local 경로가 거부됨 → 세션 scratchpad 로 복사해서 올림.
+  - 결과 856x478 5.04s aac. C30 마지막 프레임의 사진첩 표지에 가짜 글자·사람 그림(S01-02 제목 카드 뜨기 전 약 3초 보임), C31 얼굴 원형 복귀, C32 팻말 글자 없음. 기록 `clips/hf_web_jobs.json`.
+  - compose 재실행(재사용 C05~C17·C22·C23 = CH2-1 Wan 클립, 로컬에는 같은 형제 폴더 구조로 복사) → 579.4s, -16.5 LUFS, 클립 장면 프레임 11장 검증. **[사용자 지시] "작업이 끝나면 폴더 전체를 Z:로 다시 맞춰"** → robocopy /E (로컬 277 파일 = Z: 278, 288.4MB).
+
+- **[확정] 2026-10-30 사용자: Higgsfield 계정을 yookwanhee6@gmail.com 으로 변경** (@streamingruler1405 중단). 확인: 맥 전용 Chrome(9341) `hfmalli whoami` → yookwanhee6, ok:true (hfmalli.mjs 의 ACCOUNT/PORT 는 원래 yookwanhee6/9341 그대로였음 — 10-29 의 higgsfield.study 변경은 hfmalli 에 반영된 적 없음). Windows Chrome 로그인은 사용자가 바꿔야 함. Claude Code 의 `higgsfield-mac` MCP(OAuth, 계정 이메일 조회 불가, Ultra 3,402크레딧)는 생성에 쓰지 않음 — 바꾸려면 사용자가 /mcp 에서 재인증. 반영: CLAUDE.md, docs/14.
+- **[확정·정정] 2026-10-30 사용자: "힉스필드 2 계정을 써 — 윈도우는 higgsfield.study@gmail.com, 맥은 yookwanhee6@gmail.com"** → 바로 위 "yookwanhee6 로 변경(단일 계정)" 항목을 대체. 맥 = 말리 Chrome 9341 + hfmalli(기대 계정 yookwanhee6 그대로, 수정 불필요). Windows = Chrome + Claude 확장, higgsfield.study 로그인 확인 후 제출. 런웨이 Chrome(9338) 공유 방식은 폐기. 반영: CLAUDE.md, docs/14, hf_web_clips.py 주석.
