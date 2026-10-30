@@ -6,7 +6,7 @@ Orca 의 에이전트는 아래 `hfmalli` 명령과 `scripts/hf_web_clips.py` �
 > **2026-10-30 사용자 지시: Higgsfield 계정 2개를 기기별로 나눠 쓴다.**
 > - **Windows = higgsfield.study@gmail.com** — Windows Chrome + Claude in Chrome 확장으로 Higgsfield 웹 직접 조작(hfmalli 미사용).
 > - **맥 = yookwanhee6@gmail.com** — 맥 전용 Chrome(포트 9341) + `hfmalli` + `scripts/hf_web_clips.py`.
-> - @streamingruler1405 는 더 쓰지 않는다. 제출 전 그 기기의 로그인 계정이 위와 맞는지 확인, 다르면 제출 금지.
+> - 화면 왼쪽 위 "streamingruler1405's workspace" 는 higgsfield.study 계정의 워크스페이스 이름이다(10-30 프로필 화면에서 확인, 같은 계정). 제출 전 그 기기의 로그인 계정이 위와 맞는지 확인, 다르면 제출 금지.
 > 규칙은 그대로: 시작 그림 업로드·Wan 3.0·해상도·소리 설정 후 버튼 비용을 먼저 보고 → 승인 후에만 Generate. 결과는 편 폴더 `clips/Cxx_1080p.mp4`.
 > 두 계정은 크레딧 잔액이 따로다 — 비용·잔액 보고 때 어느 계정인지 함께 적는다.
 

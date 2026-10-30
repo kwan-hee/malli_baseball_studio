@@ -48,7 +48,7 @@ python compose.py           # ffmpeg 최종 조립 → {편명}_final.mp4
 - 릴리 선생 이미지 프롬프트는 `prompts/lily_character.txt` 에서 파생, `images/style_ref/lily.png` 를 multimodal 참조로 첨부 (2026-10-22 확정)
 - 야구사전 삽화에 실존 선수 얼굴 금지 (유니폼 색·상황으로 표현)
 - 영상 플랫폼: 동화 = Google Flow(Veo 3.1) 우선 / 야구 = Higgsfield(Seedance) 우선 — docs/01_COST_POLICY.md
-- **Higgsfield는 웹으로만, 계정 2개를 기기별로** (2026-10-30 확정): **Windows = higgsfield.study@gmail.com** (Windows Chrome + Claude 확장으로 웹 직접 조작) / **맥 = yookwanhee6@gmail.com** (말리 Chrome 포트 9341 + `hfmalli` + `scripts/hf_web_clips.py`). MCP·API 직접 호출 금지, @streamingruler1405 미사용. 크레딧 잔액은 계정별로 따로 — docs/14_HIGGSFIELD_WEB.md
+- **Higgsfield는 웹으로만, 계정 2개를 기기별로** (2026-10-30 확정): **Windows = higgsfield.study@gmail.com** (Windows Chrome + Claude 확장으로 웹 직접 조작) / **맥 = yookwanhee6@gmail.com** (말리 Chrome 포트 9341 + `hfmalli` + `scripts/hf_web_clips.py`). MCP·API 직접 호출 금지. (@streamingruler1405 = higgsfield.study 계정의 워크스페이스 이름, 같은 계정) 크레딧 잔액은 계정별로 따로 — docs/14_HIGGSFIELD_WEB.md
 - **테스트 버전 클립 = Wan 3.0 · 480p · 소리 켬 고정** (2026-10-29): `hf_web_clips.py --test`. 테스트본을 만든 뒤 정식 제작 여부를 사용자에게 묻는다
 - **정식 버전 클립 = Wan 3.0 · 720p · 소리 켬 고정** (2026-10-29): 테스트 통과 후 `hf_web_clips.py --final`. 다른 모델·해상도로 바꾸지 않는다
 
